@@ -5,6 +5,7 @@ import { Stack } from "expo-router";
 import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
 import "../global.css";
+import { navigationRef, resetAndNavigate } from "../utils/NavigationUtils";
 
 const Layout = () => {
   const [fontsLoaded] = useFonts({
@@ -28,6 +29,8 @@ const Layout = () => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="DeliverLogin" options={{ headerShown: false }} />
+      <Stack.Screen name="CustomerLogin" options={{ headerShown: false }} />
     </Stack>
   );
 };
