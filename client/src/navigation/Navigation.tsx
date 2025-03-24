@@ -1,7 +1,10 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { FC } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Navigation = () => {
+const Stack = createNativeStackNavigator();
+
+const Navigation: FC = () => {
   return (
     <View>
       <Text>Navigation</Text>
