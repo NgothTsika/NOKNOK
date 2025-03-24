@@ -1,7 +1,7 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Logo from "../assets/images/logo.png";
+import Logo from "../assets/images/splash_logo.jpeg";
 
 const Main = () => {
   return (
