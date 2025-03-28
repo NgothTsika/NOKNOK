@@ -22,7 +22,7 @@ const Layout = () => {
     if (fontsLoaded && !hasNavigated) {
       const timeoutId = setTimeout(() => {
         setHasNavigated(true);
-      }, 1000);
+      }, 3000);
       return () => clearTimeout(timeoutId);
     }
   }, [fontsLoaded, hasNavigated]);

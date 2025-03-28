@@ -1,46 +1,35 @@
 import { View, Text, SafeAreaView, Image, Alert } from "react-native";
-import React, { FC, useEffect } from "react";
+import React, { useEffect } from "react";
 import Logo from "../../../assets/images/splash_logo.jpeg";
-import GeoLocation from "react-native-maps";
-import { resetAndNavigate } from "../../../utils/NavigationUtils";
+import { useRouter } from "expo-router";
+import { tokenStorage } from "../../../state/storeage";
 
-interface Props {
-  listings: any;
-}
+const SplashScreen = () => {
+  const router = useRouter();
 
-// GeoLocation.setRNConfiguration({
-//   skipPermissionRequests: false,
-//   authorizationLevel: "always",
-//   enableBackgroundLocationUpdates: true,
-//   locationProvider: "auto",
-// });
+  const tokenCheck = async () => {
+    try {
+      const accessToken = await tokenStorage.getItem("accessToken");
+      const refreshToken = await tokenStorage.getItem("refreshToken");
 
-const SplashScreen: FC = () => {
-  // const { user, setUser } = useAuthStore();
+      if (accessToken) {
+        console.log("Access Token Found:", accessToken);
+      }
 
-  // const tokenCheck = async () => {
-  //   const accessToken = tokenStorage.getString("accessToken") as string;
-  //   const refreshToken = tokenStorage.getString("refreshToken") as string;
+      // Navigate to CustomerLogin
+      router.replace("/features/auth/CustomerLogin");
+    } catch (error) {
+      console.error("Error checking tokens:", error);
+    }
+  };
 
-  //   if (accessToken) {
-  //   }
-  //   resetAndNavigate("CustomerLogin");
-  //   return false;
-  // };
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      tokenCheck();
+    }, 3000);
 
-  // useEffect(() => {
-  //   const fetchUserLocation = async () => {
-  //     try {
-  //       GeoLocation;
-  //       // tokenCheck();
-  //       resetAndNavigate("CustomerLogin");
-  //     } catch (error) {
-  //       Alert.alert("Sorry we need your location to continue");
-  //     }
-  //   };
-  //   const timeoutId = setTimeout(fetchUserLocation, 1000);
-  //   return () => clearTimeout(timeoutId);
-  // }, []);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 justify-between items-center bg-primary">

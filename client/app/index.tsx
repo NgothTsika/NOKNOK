@@ -4,7 +4,7 @@ import SplashScreen from "./features/auth/splashScreen";
 import CustomerLogin from "./features/auth/CustomerLogin";
 
 const Main = () => {
-  return <CustomerLogin />;
+  return <SplashScreen />;
 };
 
 export default Main;

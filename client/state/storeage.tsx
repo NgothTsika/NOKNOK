@@ -1,25 +1,53 @@
-import { MMKV } from "react-native-mmkv";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const tokenStorage = new MMKV({
-  id: "token-storage",
-  encryptionKey: "token-storage-encryption-key",
-});
-
-export const storage = new MMKV({
-  id: "my-app-storage",
-  encryptionKey: "my-app-storage-encryption-key",
-});
-
-export const mmkvStorage = {
-  setItem: (key: string, value: string) => {
-    storage.set(key, value);
+export const tokenStorage = {
+  setItem: async (key: string, value: string) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.error("Error saving token to storage:", error);
+    }
   },
-  getItem: (key: string) => {
-    const value = storage.getString(key);
-    return value ?? null;
+  getItem: async (key: string) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      return value ?? null;
+    } catch (error) {
+      console.error("Error retrieving token from storage:", error);
+      return null;
+    }
   },
-  removeItem: (key: string) => {
-    storage.delete(key);
+  removeItem: async (key: string) => {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error("Error removing token from storage:", error);
+    }
+  },
+};
+
+export const storage = {
+  setItem: async (key: string, value: string) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.error("Error saving data to storage:", error);
+    }
+  },
+  getItem: async (key: string) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      return value ?? null;
+    } catch (error) {
+      console.error("Error retrieving data from storage:", error);
+      return null;
+    }
+  },
+  removeItem: async (key: string) => {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error("Error removing data from storage:", error);
+    }
   },
 };
