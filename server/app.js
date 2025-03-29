@@ -1,66 +1,54 @@
-require("dotenv").config();
-require("express-async-errors");
-
-const EventEmitter = require("events");
-EventEmitter.defaultMaxListeners = 20;
-
-const express = require("express");
-const http = require("http");
-const socketIo = require("socket.io");
-const connectDB = require("./config/connect");
-const notFoundMiddleware = require("./middleware/not-found");
-const errorHandlerMiddleware = require("./middleware/error-handler");
-const authMiddleware = require("./middleware/authentication");
-
-// Routers
-const authRouter = require("./routes/auth");
-const rideRouter = require("./routes/ride");
-
-// Import socket handler
-const handleSocketConnection = require("./controllers/sockets");
-
-const app = express();
-app.use(express.json());
-
-const server = http.createServer(app);
-
-const io = socketIo(server, { cors: { origin: "*" } });
-
-// Attach the WebSocket instance to the request object
-app.use((req, res, next) => {
-  req.io = io;
-  return next();
-});
-
-// Initialize the WebSocket handling logic
-handleSocketConnection(io);
-
-// Routes
-app.use("/auth", authRouter);
-app.use("/ride", authMiddleware, rideRouter);
-
-// Middleware
-app.use(notFoundMiddleware);
-app.use(errorHandlerMiddleware);
+import "dotenv/config";
+import Fastify from "fastify";
+import { connectDB } from "./src/configs/connect.js";
+import { PORT } from "./src/configs/config.js";
+import { admin, buildAdminRouter } from "./src/configs/setup.js";
+import { registerRoutes } from "./src/routes/index.js";
+import fastifySocketIO from "fastify-socket.io";
 
 const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URI);
+  await connectDB(process.env.MONGO_URI);
 
-    // Uncomment this and comment below one if you want to run on ip address so that you can
-    // access api in physical device
+  const app = Fastify();
 
-    // server.listen(process.env.PORT || 3000, "0.0.0.0", () =>
-    server.listen(process.env.PORT || 3000, () =>
+  app.register(fastifySocketIO, {
+    cors: {
+      origin: "*",
+    },
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    transports: ["websocket"],
+  });
+
+  await registerRoutes(app);
+
+  await buildAdminRouter(app);
+
+  app.listen({ port: PORT }, (err, addr) => {
+    if (err) {
+      console.log(err);
+      process.exit(1);
+    } else {
       console.log(
-        `HTTP server is running on port http://localhost:${
-          process.env.PORT || 3000
-        }`
-      )
-    );
-  } catch (error) {
-    console.log(error);
-  }
+        `TokTok-Shop Started on http://localhost:${PORT}${admin.options.rootPath} `
+      );
+    }
+  });
+
+  app.ready().then(() => {
+    app.io.on("connection", (socket) => {
+      console.log("A User Connected");
+
+      socket.on("joinRoom", (orderId) => {
+        socket.join(orderId);
+        console.log(`User Joined room ${orderId}`);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("User Disconnected");
+      });
+    });
+  });
 };
 
 start();

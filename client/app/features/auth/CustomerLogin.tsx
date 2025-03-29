@@ -23,6 +23,7 @@ import CustomButton from "@/components/ui/CustomButton";
 import useKeyboardOffsetHeight from "@/components/ui/useKeyboardOffset";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient"; // Use expo-linear-gradient
+import { router } from "expo-router";
 
 const bottomColors: [string, string, ...string[]] = [
   ...lightColors,
@@ -57,7 +58,7 @@ const CustomerLogin: FC = () => {
     setLoading(true);
     try {
       await CustomerLogin(phoneNumber);
-      resetAndNavigate("ProductDashboard");
+      router.replace("/features/dashboard/ProductDashboard");
     } catch (error) {
       Alert.alert("Login Failed");
     } finally {
