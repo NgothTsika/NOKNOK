@@ -8,42 +8,48 @@ export const customerLogin = async (phone: string) => {
   try {
     const response = await axios.post(`${BASE_URL}/customer/login`, { phone });
     const { accessToken, refreshToken, customer } = response.data;
-    asyncStorage.setItem("accessToken", accessToken);
-    asyncStorage.setItem("refreshToken", refreshToken);
+
+    await asyncStorage.setItem("accessToken", accessToken);
+    await asyncStorage.setItem("refreshToken", refreshToken);
+
     const { setUser } = useAuthStore.getState();
     setUser(customer);
   } catch (error) {
-    console.log("login Error", error);
+    console.error("Login Error:", error);
   }
 };
 
-export const refetchUser = async (setUser: any) => {
+export const refetchUser = async (phone: string, setUser: any) => {
   try {
     const response = await axios.post(`${BASE_URL}/customer/login`, { phone });
-
+    const { customer } = response.data;
     setUser(customer);
   } catch (error) {
-    console.log("login Error", error);
+    console.error("Error refetching user:", error);
   }
 };
 
 export const refresh_Token = async () => {
   try {
-    const refreshToken = asyncStorage.getItem("resfresh");
+    const refreshToken = await asyncStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      throw new Error("No refresh token found");
+    }
+
     const response = await axios.post(`${BASE_URL}/refresh-token`, {
       refreshToken,
     });
 
-    const new_access_token = response.data.accessToken;
-    const new_refresh_token = response.data.refreshToken;
+    const { accessToken, refreshToken: newRefreshToken } = response.data;
 
-    asyncStorage.setItem("accessToken", new_access_token);
-    asyncStorage.setItem("refreshToken", new_refresh_token);
+    await asyncStorage.setItem("accessToken", accessToken);
+    await asyncStorage.setItem("refreshToken", newRefreshToken);
 
-    return new_access_token;
+    return accessToken;
   } catch (error) {
-    console.log("REFRESH TOKEN ERROR", error);
-    asyncStorage.removeItem();
+    console.error("REFRESH TOKEN ERROR:", error);
+    await asyncStorage.removeItem("accessToken");
+    await asyncStorage.removeItem("refreshToken");
     resetAndNavigate("customerLogin");
   }
 };
