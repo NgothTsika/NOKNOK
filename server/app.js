@@ -24,13 +24,14 @@ const start = async () => {
 
   await buildAdminRouter(app);
 
-  app.listen({ port: PORT }, (err, addr) => {
+  app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
+    // rplace to this app.listen({ port: PORT }, (err, addr) => {
     if (err) {
       console.log(err);
       process.exit(1);
     } else {
       console.log(
-        `TokTok-Shop Started on http://localhost:${PORT}${admin.options.rootPath} `
+        `TokTok-Shop Started on http://192.168.0.199:${PORT}${admin.options.rootPath} ` // http://localhost:${PORT}${admin.options.rootPath}
       );
     }
   });
