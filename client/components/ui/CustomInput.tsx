@@ -2,7 +2,7 @@ import { Colors, Fonts } from "@/utils/Constants";
 import React, { FC } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
-import Icon, { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 interface InputProps {
   left: React.ReactNode;
@@ -13,7 +13,7 @@ interface InputProps {
 const CustomInput: FC<InputProps & React.ComponentProps<typeof TextInput>> = ({
   onClear,
   left,
-  right,
+  right = true,
   ...props
 }) => {
   return (
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   inuptContainer: {
     width: "70%",
     fontFamily: Fonts.SemiBold,
-    fontSize: RFValue(12),
+    fontSize: RFValue(14),
     paddingVertical: 14,
     paddingBottom: 15,
     height: "100%",

@@ -37,13 +37,13 @@ const Row: FC<{ row: typeof imageData; rowIndex: number }> = ({
   rowIndex,
 }) => {
   return (
-    <View className="flex-row mb-3">
+    <View className="flex-row mb-3 ">
       {row.map((image, imageIndex) => {
         const horizontalImage = rowIndex % 2 === 0 ? -18 : 18;
         return (
           <View
             key={imageIndex}
-            className="mt-1 mb-3 mx-2 bg-[#ecfdf1] justify-center items-center rounded-3xl"
+            className="mt-1 mb-3 mx-2 bg-[#f5fff8] justify-center items-center rounded-3xl"
             style={{
               width: screenWidth * 0.26,
               height: screenWidth * 0.26,

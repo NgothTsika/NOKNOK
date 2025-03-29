@@ -28,14 +28,17 @@ const CustomButton: FC<CustomButtonProps> = ({
         },
       ]}
     >
-      <ActivityIndicator color="white" size="small" />
-      <CustomerText
-        variants="h6"
-        style={styles.text}
-        fontFamily={Fonts.SemiBold}
-      >
-        {title}
-      </CustomerText>
+      {loading ? (
+        <ActivityIndicator color="white" size={"small"} />
+      ) : (
+        <CustomerText
+          variants="h6"
+          style={styles.text}
+          fontFamily={Fonts.SemiBold}
+        >
+          {title}
+        </CustomerText>
+      )}
     </TouchableOpacity>
   );
 };
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    padding: 10,
+    padding: 15,
     marginVertical: 15,
     width: "100%",
   },
