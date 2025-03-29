@@ -56,6 +56,8 @@ const CustomerLogin: FC = () => {
     Keyboard.dismiss();
     setLoading(true);
     try {
+      await CustomerLogin(phoneNumber);
+      resetAndNavigate("ProductDashboard");
     } catch (error) {
       Alert.alert("Login Failed");
     } finally {
@@ -123,7 +125,7 @@ const CustomerLogin: FC = () => {
                       variants="h5"
                       fontFamily={Fonts.SemiBold}
                     >
-                      + 242
+                      + 233
                     </CustomerText>
                   }
                   placeholder="Enter mobile number"

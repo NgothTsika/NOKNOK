@@ -32,6 +32,7 @@ const Layout = () => {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="DeliverLogin" options={{ headerShown: false }} />
       <Stack.Screen name="CustomerLogin" options={{ headerShown: false }} />
+      <Stack.Screen name="ProductDashboard" options={{ headerShown: false }} />
     </Stack>
   );
 };

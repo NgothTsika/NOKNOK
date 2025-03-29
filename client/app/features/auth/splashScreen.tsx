@@ -4,6 +4,9 @@ import Logo from "../../../assets/images/splash_logo.jpeg";
 import { useRouter } from "expo-router";
 import { tokenStorage } from "../../../state/storeage";
 
+interface DecodedToken {
+  exp: number;
+}
 const SplashScreen = () => {
   const router = useRouter();
 
@@ -13,11 +16,13 @@ const SplashScreen = () => {
       const refreshToken = await tokenStorage.getItem("refreshToken");
 
       if (accessToken) {
-        console.log("Access Token Found:", accessToken);
+        const decodedAccessToken = jwtDecode<DecodedToken>(accessToken);
+        const decodedrefreshToken = jwtDecode<DecodedToken>(refreshToken);
       }
 
       // Navigate to CustomerLogin
       router.replace("/features/auth/CustomerLogin");
+      return false;
     } catch (error) {
       console.error("Error checking tokens:", error);
     }
