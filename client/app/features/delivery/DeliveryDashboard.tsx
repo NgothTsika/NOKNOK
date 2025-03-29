@@ -1,11 +1,15 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
+import { Link } from "expo-router";
 
 const DeliveryDashboard = () => {
   return (
-    <View>
-      <Text>DeliveryDashboard</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text>DeliveryDashboard</Text>
+        <Link href="/features/auth/DeliverLogin">Go</Link>
+      </View>
+    </SafeAreaView>
   );
 };
 

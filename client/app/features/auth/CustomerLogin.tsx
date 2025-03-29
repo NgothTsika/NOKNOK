@@ -14,7 +14,6 @@ import {
   State,
 } from "react-native-gesture-handler";
 import ProductSlider from "../../../components/login/ProductSlider";
-import { resetAndNavigate } from "../../../utils/NavigationUtils";
 import Logo from "../../../assets/images/logo.png";
 import CustomerText from "@/components/ui/CustomText";
 import { Fonts, lightColors } from "@/utils/Constants";
@@ -69,21 +68,23 @@ const CustomerLogin: FC = () => {
 
   const handleGesture = ({ nativeEvent }: any) => {
     if (nativeEvent.state === State.END) {
-      const { transaltionX, transaltionY } = nativeEvent;
+      const { translationX, translationY } = nativeEvent;
       let direction = "";
-      if (Math.abs(transaltionX) > Math.abs(transaltionY)) {
-        direction = transaltionX > 0 ? "right" : "left";
-      } else {
-        direction = transaltionY > 0 ? "down" : "up";
-      }
-      console.log(transaltionX, transaltionY, direction);
 
-      const newSequence = [...gestureSequence, direction].slice(-3);
+      if (Math.abs(translationX) > Math.abs(translationY)) {
+        direction = translationX > 0 ? "right" : "left";
+      } else {
+        direction = translationY > 0 ? "down" : "up";
+      }
+
+      console.log("Gesture detected:", translationX, translationY, direction);
+
+      const newSequence = [...gestureSequence, direction].slice(-5);
       setGestureSequence(newSequence);
 
       if (newSequence.join(" ") === "up up down left right") {
         setGestureSequence([]);
-        resetAndNavigate("DeliveryLogin"); //check route after
+        router.navigate("/features/auth/DeliverLogin"); // Check route after
       }
     }
   };
