@@ -2,6 +2,7 @@ import { View, Text, Animated as RNAnimated, SafeAreaView } from "react-native";
 import React, { useEffect, useRef } from "react";
 import NoticeAnimation from "@/app/features/dashboard/NoticeAnimation";
 import { NoticeHeight } from "@/utils/Scalling";
+import Visuals from "./Visuals";
 
 const NOTICE_HEIGHT = -(NoticeHeight + 12);
 
@@ -18,7 +19,7 @@ const ProductDashboard = () => {
   const slideDown = () => {
     RNAnimated.timing(noticePosition, {
       toValue: 0,
-      duration: 5000,
+      duration: 1200,
       useNativeDriver: false,
     }).start();
   };
@@ -33,6 +34,7 @@ const ProductDashboard = () => {
   return (
     <NoticeAnimation noticePosition={noticePosition}>
       <>
+        <Visuals />
         <SafeAreaView />
         <View className=" flex-1">
           <Text>ProductDashboard</Text>

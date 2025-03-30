@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { NoticeHeight } from "@/utils/Scalling";
 import Notice from "@/components/dashboard/Notice";
 
-const NOTICE_HEIGHT = -(NoticeHeight + 12);
+const NOTICE_HEIGHT = -(NoticeHeight + 10);
 
 const NoticeAnimation: FC<{
   noticePosition: RNAnimated.Value; // Properly typed as Animated.Value

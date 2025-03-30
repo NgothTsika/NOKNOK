@@ -43,6 +43,8 @@ const SplashScreen: FC = () => {
           router.replace("/features/auth/CustomerLogin");
           return;
         }
+      } else {
+        router.replace("/features/dashboard/ProductDashboard");
       }
 
       if (user?.role === "Customer") {
@@ -71,11 +73,7 @@ const SplashScreen: FC = () => {
 
         // Get the user's current location
         const location = await Location.getCurrentPositionAsync({});
-        const { latitude, longitude } = location.coords; // Extract latitude and longitude
-        console.log("User's Latitude:", latitude);
-        console.log("User's Longitude:", longitude);
-
-        // You can now use latitude and longitude as needed
+        console.log("User's Location:", location);
       } catch (error) {
         console.error("Error fetching location:", error);
         Alert.alert(
