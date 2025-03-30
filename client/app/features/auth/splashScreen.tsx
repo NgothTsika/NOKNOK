@@ -47,9 +47,10 @@ const SplashScreen = () => {
 
       if (user?.role === "Customer") {
         router.replace("/features/dashboard/ProductDashboard");
-      } else {
-        router.replace("/features/delivery/DeliveryDashboard");
       }
+      // else {
+      //   router.replace("/features/delivery/DeliveryDashboard");
+      // }
 
       return true;
     }
