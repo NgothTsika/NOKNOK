@@ -18,7 +18,7 @@ const ProductDashboard = () => {
   const slideDown = () => {
     RNAnimated.timing(noticePosition, {
       toValue: 0,
-      duration: 1200,
+      duration: 5000,
       useNativeDriver: false,
     }).start();
   };

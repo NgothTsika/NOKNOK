@@ -1,16 +1,16 @@
 import { View, Text, SafeAreaView, Image, Alert } from "react-native";
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import Logo from "../../../assets/images/splash_logo.jpeg";
 import { useRouter } from "expo-router";
 import { asyncStorage } from "../../../state/storeage";
 import { refresh_Token } from "@/service/authService";
-import { useAuthStore } from "@/state/authStore";
+import * as Location from "expo-location"; // Import expo-location
 
 interface DecodedToken {
   exp: number;
 }
 
-const SplashScreen = () => {
+const SplashScreen: FC = () => {
   const router = useRouter();
   const [user, setUser] = React.useState<{ role: string } | null>(null);
 
@@ -48,10 +48,6 @@ const SplashScreen = () => {
       if (user?.role === "Customer") {
         router.replace("/features/dashboard/ProductDashboard");
       }
-      // else {
-      //   router.replace("/features/delivery/DeliveryDashboard");
-      // }
-
       return true;
     }
 
@@ -59,13 +55,47 @@ const SplashScreen = () => {
     return false;
   };
 
+  // Request Location Permissions and Fetch User Location
+  useEffect(() => {
+    const fetchUserLocation = async () => {
+      try {
+        // Request location permissions
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          Alert.alert(
+            "Permission Denied",
+            "Location permission is required to provide a better shopping experience."
+          );
+          return;
+        }
+
+        // Get the user's current location
+        const location = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = location.coords; // Extract latitude and longitude
+        console.log("User's Latitude:", latitude);
+        console.log("User's Longitude:", longitude);
+
+        // You can now use latitude and longitude as needed
+      } catch (error) {
+        console.error("Error fetching location:", error);
+        Alert.alert(
+          "Error",
+          "Unable to fetch location. Please enable location services."
+        );
+      }
+    };
+
+    const timeoutId = setTimeout(fetchUserLocation, 1000); // Delay the request slightly
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       tokenCheck();
     }, 3000);
 
     return () => clearTimeout(timeoutId);
-  }, [user]); // Added user dependency for correct role-based navigation.
+  }, [user]);
 
   return (
     <SafeAreaView className="flex-1 justify-between items-center bg-primary">
