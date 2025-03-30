@@ -86,7 +86,7 @@ const DeliverLogin: FC = () => {
               />
             }
             placeholder="• • • • • • • •"
-            inputMode="email"
+            secureTextEntry
             right={false}
           />
           <CustomButton
