@@ -35,18 +35,18 @@ const Header: FC<{ showNotice: () => void }> = ({ showNotice }) => {
             </CustomerText>
           </TouchableOpacity>
         </View>
-        <View className="flex-row items-center gap-1 justify-center  w-[70%]  ">
+        <View className="flex-row items-center gap-0 justify-center  w-[70%]  ">
           <CustomerText
-            variants="h7"
+            variants="h9"
             fontFamily={Fonts.Medium}
             style={styles.text2}
           >
-            {user?.address || "Konwhere, Somewher 😅"}
+            {user?.address || "Konwhere, Somewhere 😅"}
           </CustomerText>
           <Ionicons
             name="caret-down-outline"
             color="#fff"
-            style={{ bottom: -3 }}
+            style={{ bottom: -2 }}
           />
         </View>
       </TouchableOpacity>
