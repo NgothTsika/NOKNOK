@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     justifyContent: "space-between",
-    paddingTop: Platform.OS === "ios" ? 60 : 2,
+    paddingTop: Platform.OS === "ios" ? 10 : 5,
   },
   text: {
     color: "#fff",

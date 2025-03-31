@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { NoticeHeight } from "@/utils/Scalling";
 import Notice from "@/components/dashboard/Notice";
 
-const NOTICE_HEIGHT = -(NoticeHeight + 10);
+const NOTICE_HEIGHT = -(NoticeHeight + 12);
 
 const NoticeAnimation: FC<{
   noticePosition: RNAnimated.Value; // Properly typed as Animated.Value
@@ -27,7 +27,7 @@ const NoticeAnimation: FC<{
         style={{
           paddingTop: noticePosition.interpolate({
             inputRange: [NOTICE_HEIGHT, 0], // Fixed inputRange
-            outputRange: [0, NOTICE_HEIGHT + 20], // Ensure proper interpolation
+            outputRange: [0, NoticeHeight + 20], // Ensure proper interpolation
           }),
         }}
       >
