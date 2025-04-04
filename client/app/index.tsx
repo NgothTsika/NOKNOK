@@ -1,8 +1,9 @@
-import React from 'react';
-import SplashScreen from './features/auth/splashScreen';
-
+import "react-native-reanimated";
+import React from "react";
+import Layout from "./_layout";
 const Main = () => {
-  return <SplashScreen />;
+  return;
+  <Layout />;
 };
 
 export default Main;

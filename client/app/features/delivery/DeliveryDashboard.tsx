@@ -7,7 +7,6 @@ const DeliveryDashboard = () => {
     <SafeAreaView>
       <View>
         <Text>DeliveryDashboard</Text>
-        <Link href="/features/auth/DeliverLogin">Go</Link>
       </View>
     </SafeAreaView>
   );

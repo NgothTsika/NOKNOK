@@ -19,7 +19,7 @@ export const useAuthStore = create<authStore>()(
       setCurrentOrder: (order) => set({ currentOrder: order }),
       setUser: (data) => set({ user: data }),
       logout: () => set({ user: null, currentOrder: null }),
-      // getUser: () => get().user, // Now you can retrieve the user from the store
+      getUser: () => get().user, // Now you can retrieve the user from the store
     }),
     {
       name: "auth-storage",

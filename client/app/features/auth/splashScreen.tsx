@@ -1,17 +1,18 @@
 import { View, Text, SafeAreaView, Image, Alert } from "react-native";
 import React, { FC, useEffect } from "react";
 import Logo from "../../../assets/images/splash_logo.jpeg";
-import { useRouter } from "expo-router";
 import { asyncStorage } from "../../../state/storeage";
 import { refresh_Token } from "@/service/authService";
 import * as Location from "expo-location"; // Import expo-location
+import { resetAndNavigate } from "@/utils/NavigationUtils";
 
 interface DecodedToken {
   exp: number;
+  iat: number;
+  [key: string]: any;
 }
 
 const SplashScreen: FC = () => {
-  const router = useRouter();
   const [user, setUser] = React.useState<{ role: string } | null>(null);
 
   const tokenCheck = async () => {
@@ -25,7 +26,7 @@ const SplashScreen: FC = () => {
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (decodedRefreshToken.exp < currentTime) {
-        router.replace("/features/auth/CustomerLogin");
+        resetAndNavigate("CustomerLogin");
         Alert.alert("Session Expired", "Please login again");
         return;
       }
@@ -40,20 +41,20 @@ const SplashScreen: FC = () => {
         } catch (error) {
           console.error("Error refreshing tokens:", error);
           Alert.alert("Error", "There was an error refreshing your session.");
-          router.replace("/features/auth/CustomerLogin");
+          resetAndNavigate("CustomerLogin");
           return;
         }
       } else {
-        router.replace("/features/dashboard/ProductDashboard");
+        resetAndNavigate("ProductDashboard");
       }
 
       if (user?.role === "Customer") {
-        router.replace("/features/dashboard/ProductDashboard");
+        resetAndNavigate("ProductDashboard");
       }
       return true;
     }
 
-    router.navigate("/features/auth/CustomerLogin");
+    resetAndNavigate("CustomerLogin");
     return false;
   };
 

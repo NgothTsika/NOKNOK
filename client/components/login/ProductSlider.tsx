@@ -1,6 +1,6 @@
 import { View, Text, Image } from "react-native";
 import React, { FC, useMemo } from "react";
-import { imageData } from "../../utils/dummyData";
+import { imageData } from "@/utils/dummyData";
 import AutoScroll from "@homielab/react-native-auto-scroll";
 import { Dimensions } from "react-native";
 

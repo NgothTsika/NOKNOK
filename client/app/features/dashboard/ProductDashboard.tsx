@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Animated as RNAnimated,
-  SafeAreaView,
-  StyleSheet,
-} from "react-native";
+import { Animated as RNAnimated, SafeAreaView, StyleSheet } from "react-native";
 import React, { useEffect, useRef } from "react";
 import NoticeAnimation from "@/app/features/dashboard/NoticeAnimation";
 import { NoticeHeight } from "@/utils/Scalling";
@@ -12,10 +6,12 @@ import Visuals from "./Visuals";
 import {
   CollapsibleContainer,
   CollapsibleHeaderContainer,
+  CollapsibleScrollView,
   withCollapsibleContext,
 } from "@r0b0t3d/react-native-collapsible";
 import AnimatedHeader from "./AnimatedHeader";
 import StickSearchBar from "./StickSearchBar";
+import ContentContainer from "@/components/dashboard/Content";
 
 const NOTICE_HEIGHT = -(NoticeHeight + 12);
 
@@ -62,6 +58,13 @@ const ProductDashboard = () => {
             />
             <StickSearchBar />
           </CollapsibleHeaderContainer>
+          <CollapsibleScrollView
+            nestedScrollEnabled
+            style={styles.first}
+            showsVerticalScrollIndicator={false}
+          >
+            <ContentContainer />
+          </CollapsibleScrollView>
         </CollapsibleContainer>
       </>
     </NoticeAnimation>
