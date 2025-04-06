@@ -1,8 +1,12 @@
 import React from "react";
+import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
+import { useEffect, useState } from "react";
+import { Stack } from "expo-router";
 import { gestureHandlerRootHOC } from "react-native-gesture-handler";
-import "global.css";
-import Navigation from "./navigation/Navigation";
+
+import "../global.css";
+// import { navigationRef, resetAndNavigate } from "../utils/NavigationUtils";
 
 const Layout = () => {
   const [fontsLoaded] = useFonts({
@@ -13,9 +17,24 @@ const Layout = () => {
     "Okra-ExtraBold": require("../assets/fonts/Okra-ExtraBold.ttf"),
   });
 
-  if (!fontsLoaded) return null;
+  const [hasNavigated, setHasNavigated] = useState(false);
 
-  return <Navigation />;
+  useEffect(() => {
+    if (fontsLoaded && !hasNavigated) {
+      const timeoutId = setTimeout(() => {
+        setHasNavigated(true);
+      }, 3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [fontsLoaded, hasNavigated]);
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="DeliverLogin" options={{ headerShown: false }} />
+      <Stack.Screen name="CustomerLogin" options={{ headerShown: false }} />
+      <Stack.Screen name="ProductDashboard" options={{ headerShown: false }} />
+    </Stack>
+  );
 };
 
 export default gestureHandlerRootHOC(Layout);

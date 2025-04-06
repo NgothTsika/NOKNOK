@@ -15,7 +15,7 @@ import { Fonts } from "@/utils/Constants";
 import CustomInput from "@/components/ui/CustomInput";
 import { Ionicons } from "@expo/vector-icons";
 import CustomButton from "@/components/ui/CustomButton";
-import { resetAndNavigate } from "@/utils/NavigationUtils";
+// import { resetAndNavigate } from "@/utils/NavigationUtils";
 
 const DeliverLogin: FC = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +26,7 @@ const DeliverLogin: FC = () => {
     setLoading(true);
     try {
       await deliveryLogin(email, password);
-      resetAndNavigate("DeliveryDashboard");
+      router.navigate("/features/delivery/DeliveryDashboard");
     } catch (error) {
       Alert.alert("Login Failed");
     } finally {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./config";
-import { asyncStorage } from "@/state/storeage";
-import { refresh_Token } from "./authService";
+import { asyncStorage } from "@/state/storage";
+import { refresh_Token } from "./tokenService";
 import { Alert } from "react-native";
 
 export const appAxios = axios.create({

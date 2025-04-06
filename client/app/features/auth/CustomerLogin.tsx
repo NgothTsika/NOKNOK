@@ -23,7 +23,8 @@ import useKeyboardOffsetHeight from "@/components/ui/useKeyboardOffset";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient"; // Use expo-linear-gradient
 import { customerLogin } from "@/service/authService";
-import { resetAndNavigate } from "@/utils/NavigationUtils";
+// import { resetAndNavigate } from "@/utils/NavigationUtils";
+import { router } from "expo-router";
 
 const bottomColors: [string, string, ...string[]] = [
   ...lightColors,
@@ -58,7 +59,7 @@ const CustomerLogin: FC = () => {
     setLoading(true);
     try {
       await customerLogin(phoneNumber);
-      resetAndNavigate("ProductDashboard");
+      router.replace("/features/dashboard/ProductDashboard");
     } catch (error: any) {
       if (error.response?.status === 401) {
         Alert.alert("Unauthorized", "Invalid phone number or credentials");
@@ -90,7 +91,7 @@ const CustomerLogin: FC = () => {
 
       if (newSequence.join(" ") === "up up down left right") {
         setGestureSequence([]);
-        resetAndNavigate("DeliverLogin");
+        router.navigate("/features/auth/DeliverLogin");
       }
     }
   };

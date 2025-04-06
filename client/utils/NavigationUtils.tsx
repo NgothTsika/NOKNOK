@@ -6,22 +6,23 @@ import {
 
 export const navigationRef = createNavigationContainerRef();
 
-export async function navigate(routeName: string, params?: object) {
-  navigationRef.isReady();
+export function navigate(routeName: string, params?: object) {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(CommonActions.navigate(routeName, params));
+  } else {
+    console.warn("Navigation is not ready yet.");
   }
 }
 
-export async function replace(routeName: string, params?: object) {
-  navigationRef.isReady();
+export function replace(routeName: string, params?: object) {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(StackActions.replace(routeName, params));
+  } else {
+    console.warn("Navigation is not ready yet.");
   }
 }
 
-export async function resetAndNavigate(routeName: string) {
-  navigationRef.isReady();
+export function resetAndNavigate(routeName: string) {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(
       CommonActions.reset({
@@ -29,23 +30,23 @@ export async function resetAndNavigate(routeName: string) {
         routes: [{ name: routeName }],
       })
     );
+  } else {
+    console.warn("Navigation is not ready yet.");
   }
 }
 
-export async function goBack(routeName: string) {
-  navigationRef.isReady();
+export function goBack() {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(CommonActions.goBack());
+  } else {
+    console.warn("Navigation is not ready yet.");
   }
 }
 
-export async function push(routeName: string, params?: object) {
-  navigationRef.isReady();
+export function push(routeName: string, params?: object) {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(StackActions.push(routeName, params));
+  } else {
+    console.warn("Navigation is not ready yet.");
   }
-}
-
-export async function prepareNavigation() {
-  navigationRef.isReady();
 }
