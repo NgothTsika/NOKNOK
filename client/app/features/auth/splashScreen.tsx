@@ -3,8 +3,7 @@ import React, { FC, useEffect } from "react";
 import Logo from "../../../assets/images/splash_logo.jpeg";
 import { asyncStorage } from "@/state/storage";
 import { refresh_Token } from "@/service/tokenService";
-import * as Location from "expo-location"; // Import expo-location
-// import { resetAndNavigate } from "@/utils/NavigationUtils";
+import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 
 interface DecodedToken {
@@ -15,8 +14,29 @@ interface DecodedToken {
 
 const SplashScreen: FC = () => {
   const router = useRouter();
-
   const [user, setUser] = React.useState<{ role: string } | null>(null);
+
+  const getLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission Denied",
+          "Location permission is required to provide a better shopping experience."
+        );
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      console.log("User location:", location.coords);
+    } catch (error) {
+      console.error("Error fetching location:", error);
+      Alert.alert(
+        "Error",
+        "Unable to fetch location. Please enable location services."
+      );
+    }
+  };
 
   const tokenCheck = async () => {
     const accessToken = await asyncStorage.getItem("accessToken");
@@ -66,44 +86,11 @@ const SplashScreen: FC = () => {
       return true;
     }
 
-    // console.log("No valid tokens found");
-    // router.replace("/features/auth/CustomerLogin");
-
-    // // Fallback in case navigation fails
-    // setTimeout(() => {
-    //   console.log("Fallback: Navigating to CustomerLogin");
-    //   router.replace("/features/auth/CustomerLogin");
-    // }, 1000);
-
     return false;
   };
-  // Request Location Permissions and Fetch User Location
+
   useEffect(() => {
-    const fetchUserLocation = async () => {
-      try {
-        // Request location permissions
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          Alert.alert(
-            "Permission Denied",
-            "Location permission is required to provide a better shopping experience."
-          );
-          return;
-        }
-
-        // Get the user's current location
-        const location = await Location.getCurrentPositionAsync({});
-        console.log("User's Location:", location);
-      } catch (error) {
-        console.error("Error fetching location:", error);
-        Alert.alert(
-          "Error",
-          "Unable to fetch location. Please enable location services."
-        );
-      }
-    };
-
-    const timeoutId = setTimeout(fetchUserLocation, 1000); // Delay the request slightly
+    const timeoutId = setTimeout(getLocation, 1000); // Call the new getLocation function
     return () => clearTimeout(timeoutId);
   }, []);
 
