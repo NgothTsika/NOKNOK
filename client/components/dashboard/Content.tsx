@@ -1,12 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 
-const ContentContainer = () => {
+const Content = () => {
   return (
-    <View>
+    <View className=" mb-96">
       <Text>Hello word</Text>
     </View>
   );
 };
 
-export default ContentContainer;
+export default Content;

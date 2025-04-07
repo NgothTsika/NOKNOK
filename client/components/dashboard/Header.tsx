@@ -9,8 +9,8 @@ import React, { FC } from "react";
 import CustomerText from "../ui/CustomText";
 import { Fonts } from "@/utils/Constants";
 import { RFValue } from "react-native-responsive-fontsize";
-import { useAuthStore } from "@/state/authStore";
 import { Ionicons } from "@expo/vector-icons";
+import { useAuthStore } from "@/state/authStore";
 
 const Header: FC<{ showNotice: () => void }> = ({ showNotice }) => {
   const { setUser, user } = useAuthStore();
@@ -29,7 +29,10 @@ const Header: FC<{ showNotice: () => void }> = ({ showNotice }) => {
           >
             10 minutes
           </CustomerText>
-          <TouchableOpacity className="bg-[#E8EAF5] rounded-full px-2 py-1 -bottom-[3px] ">
+          <TouchableOpacity
+            onPress={showNotice}
+            className="bg-[#E8EAF5] rounded-full px-2 py-1 -bottom-[3px] "
+          >
             <CustomerText fontSize={RFValue(5)} fontFamily={Fonts.SemiBold}>
               🌧 Rain
             </CustomerText>
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     justifyContent: "space-between",
-    paddingTop: Platform.OS === "ios" ? 50 : 5,
+    paddingTop: Platform.OS === "android" ? 10 : 5,
   },
   text: {
     color: "#fff",

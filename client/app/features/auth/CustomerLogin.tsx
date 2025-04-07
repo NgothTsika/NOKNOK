@@ -23,7 +23,6 @@ import useKeyboardOffsetHeight from "@/components/ui/useKeyboardOffset";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient"; // Use expo-linear-gradient
 import { customerLogin } from "@/service/authService";
-// import { resetAndNavigate } from "@/utils/NavigationUtils";
 import { router } from "expo-router";
 
 const bottomColors: [string, string, ...string[]] = [

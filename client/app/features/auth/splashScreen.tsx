@@ -5,6 +5,7 @@ import { asyncStorage } from "@/state/storage";
 import { refresh_Token } from "@/service/tokenService";
 import * as Location from "expo-location";
 import { useRouter } from "expo-router";
+import { screenWidth } from "@/utils/Scalling";
 
 interface DecodedToken {
   exp: number;
@@ -28,9 +29,9 @@ const SplashScreen: FC = () => {
       }
 
       const location = await Location.getCurrentPositionAsync({});
-      console.log("User location:", location.coords);
+      // console.log("User location:", location.coords);
     } catch (error) {
-      console.error("Error fetching location:", error);
+      // console.error("Error fetching location:", error);
       Alert.alert(
         "Error",
         "Unable to fetch location. Please enable location services."
@@ -42,15 +43,13 @@ const SplashScreen: FC = () => {
     const accessToken = await asyncStorage.getItem("accessToken");
     const refreshToken = await asyncStorage.getItem("refreshToken");
 
-    console.log("Access Token:", accessToken);
-    console.log("Refresh Token:", refreshToken);
-
+    // console.log("Access Token:", accessToken);
     if (accessToken && refreshToken) {
       const decodedAccessToken = jwtDecode<DecodedToken>(accessToken);
       const decodedRefreshToken = jwtDecode<DecodedToken>(refreshToken);
 
-      console.log("Decoded Access Token:", decodedAccessToken);
-      console.log("Decoded Refresh Token:", decodedRefreshToken);
+      // console.log("Decoded Access Token:", decodedAccessToken);
+      // console.log("Decoded Refresh Token:", decodedRefreshToken);
 
       const currentTime = Math.floor(Date.now() / 1000);
 
@@ -85,7 +84,7 @@ const SplashScreen: FC = () => {
 
       return true;
     }
-
+    router.replace("/features/auth/CustomerLogin");
     return false;
   };
 
@@ -105,7 +104,11 @@ const SplashScreen: FC = () => {
   return (
     <SafeAreaView className="flex-1 justify-between items-center bg-primary">
       <View className="flex flex-col items-center justify-center flex-1">
-        <Image source={Logo} resizeMode="contain" className="w-80 h-80" />
+        <Image
+          source={Logo}
+          resizeMode="contain"
+          style={{ height: screenWidth * 0.7, width: screenWidth * 0.7 }} ///or w-88 h-88
+        />
       </View>
       <Text className="mb-4 font-NotoSans-semibold">Made in Congo 🇨🇬</Text>
     </SafeAreaView>

@@ -1,18 +1,29 @@
+import { StyleSheet, Image } from "react-native";
 import React, { FC } from "react";
-import { View, Text, Animated, Image, StyleSheet } from "react-native";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 import { darkWeatherColors } from "@/utils/Constants";
-import { LinearGradient } from "expo-linear-gradient"; // Use expo-linear-gradient
 import { screenheight, screenWidth } from "@/utils/Scalling";
 import LottieView from "lottie-react-native";
-
-const bottomColors: [string, string, ...string[]] = [
-  ...darkWeatherColors,
-].reverse() as [string, string, ...string[]];
+import { useCollapsibleContext } from "@r0b0t3d/react-native-collapsible";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Visuals: FC = () => {
+  const { scrollY } = useCollapsibleContext();
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollY.value, [0, 120], [1, 0]);
+    return { opacity };
+  });
+
   return (
-    <Animated.View style={styles.container}>
-      <LinearGradient colors={bottomColors} style={styles.gardient} />
+    <Animated.View style={[styles.container, headerAnimatedStyle]}>
+      <LinearGradient
+        colors={darkWeatherColors as [string, string, ...string[]]}
+        style={styles.gardient}
+      />
       <Image
         source={require("@assets/images/cloud.png")}
         style={styles.cloud}
@@ -27,9 +38,6 @@ const Visuals: FC = () => {
     </Animated.View>
   );
 };
-
-export default Visuals;
-
 const styles = StyleSheet.create({
   cloud: {
     width: screenWidth,
@@ -41,7 +49,7 @@ const styles = StyleSheet.create({
   },
   lottie: {
     width: "100%",
-    height: 160,
+    height: 150,
     position: "absolute",
     transform: [{ scaleX: -1 }],
   },
@@ -52,6 +60,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: screenheight * 0.4,
     position: "absolute",
-    transform: [{ rotateX: "180deg" }],
   },
 });
+
+export default Visuals;

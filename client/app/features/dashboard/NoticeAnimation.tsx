@@ -1,40 +1,55 @@
-import { View, Animated as RNAnimated } from "react-native";
+import { View, StyleSheet, Animated as RNAnimated } from "react-native";
 import React, { FC } from "react";
 import { NoticeHeight } from "@/utils/Scalling";
 import Notice from "@/components/dashboard/Notice";
 
-const NOTICE_HEIGHT = -(NoticeHeight + 12);
+const NOTICE_HEIGHT = -[NoticeHeight + 12];
 
 const NoticeAnimation: FC<{
-  noticePosition: RNAnimated.Value; // Properly typed as Animated.Value
+  noticePosition: any;
   children: React.ReactElement;
 }> = ({ noticePosition, children }) => {
   return (
-    <View className="flex-1 bg-white">
-      {/* Notice Container */}
+    <View style={styles.noticeContainer}>
       <RNAnimated.View
-        className="absolute w-full z-[999]"
-        style={{
-          transform: [{ translateY: noticePosition }],
-        }}
+        style={[
+          styles.noticeContainer,
+          { transform: [{ translateY: noticePosition }] },
+        ]}
       >
         <Notice />
       </RNAnimated.View>
-
-      {/* Main Content Container */}
       <RNAnimated.View
-        className="w-full h-full"
-        style={{
-          paddingTop: noticePosition.interpolate({
-            inputRange: [NOTICE_HEIGHT, 0], // Fixed inputRange
-            outputRange: [0, NoticeHeight + 20], // Ensure proper interpolation
-          }),
-        }}
+        style={[
+          styles.contentContainer,
+          {
+            paddingTop: noticePosition.interpolate({
+              inputRange: [NOTICE_HEIGHT, 0],
+              outputRange: [0, NoticeHeight + 20],
+            }),
+          },
+        ]}
       >
         {children}
       </RNAnimated.View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  noticeContainer: {
+    width: "100%",
+    zIndex: 999,
+    position: "absolute",
+  },
+  contentContainer: {
+    flex: 1,
+    width: "100%",
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+});
 
 export default NoticeAnimation;

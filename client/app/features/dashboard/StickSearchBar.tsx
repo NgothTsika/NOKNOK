@@ -1,5 +1,7 @@
-import { StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React, { FC } from "react";
+
+import SearchBar from "@/components/dashboard/SearchBar";
 import { Colors } from "@/utils/Constants";
 import {
   StickyView,
@@ -9,28 +11,24 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import SearchBar from "@/components/dashboard/SearchBar";
 
 const StickSearchBar: FC = () => {
   const { scrollY } = useCollapsibleContext();
 
-  const shadowStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [0, 14], [0, 1], "clamp"),
-  }));
+  const animatedShadow = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollY.value, [0, 140], [0, 1]);
+    return { opacity };
+  });
 
-  const backgroundStyle = useAnimatedStyle(() => ({
-    backgroundColor: `rgba(255,255,255, ${interpolate(
-      scrollY.value,
-      [1, 80],
-      [0, 1],
-      "clamp"
-    )})`,
-  }));
+  const backgroundColorChanges = useAnimatedStyle(() => {
+    const opacity = interpolate(scrollY.value, [1, 80], [0, 1]);
+    return { backgroundColor: `rgba(255, 255, 255, ${opacity})` };
+  });
 
   return (
-    <StickyView style={[backgroundStyle]}>
+    <StickyView style={[backgroundColorChanges]}>
       <SearchBar />
-      <Animated.View style={[styles.shadow, shadowStyle]} />
+      <Animated.View style={[styles.shadow, animatedShadow]} />
     </StickyView>
   );
 };
@@ -47,5 +45,4 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.border,
   },
 });
-
 export default StickSearchBar;
