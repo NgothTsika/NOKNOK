@@ -14,7 +14,7 @@ const AdCorousal: FC<{ adData: any }> = ({ adData }) => {
   };
 
   return (
-    <View className="-left-10 mx-5">
+    <View className="-left-10 my-5 mx-4">
       <Carousel
         {...baseOptions}
         loop
