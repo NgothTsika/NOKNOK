@@ -32,7 +32,7 @@ const Layout = () => {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="features/auth/SplashScreen"
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: "fade" }}
       />
       <Stack.Screen
         name="features/auth/DeliverLogin"

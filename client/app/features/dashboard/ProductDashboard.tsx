@@ -20,9 +20,8 @@ import Content from "@/components/dashboard/Content";
 import CustomerText from "@/components/ui/CustomText";
 import { Fonts } from "@/utils/Constants";
 import { RFValue } from "react-native-responsive-fontsize";
-import { Text } from "react-native";
 
-const NOTICE_HEIGHT = -(NoticeHeight + 12); // <-- OK
+const NOTICE_HEIGHT = -(NoticeHeight + 12);
 
 const ProductDashboard = () => {
   const noticePosition = useRef(new RNAnimted.Value(NOTICE_HEIGHT)).current;
@@ -53,46 +52,45 @@ const ProductDashboard = () => {
     <NoticeAnimation noticePosition={noticePosition}>
       <>
         <Visuals />
-        <SafeAreaView>
-          <CollapsibleContainer style={styles.panelContainer}>
-            <CollapsibleHeaderContainer containerStyle={styles.transparent}>
-              <AnimatedHeader
-                showNotice={() => {
-                  SlideDown();
-                  const timeoutId = setTimeout(() => {
-                    SlideUp();
-                  }, 3500);
-                  return () => clearTimeout(timeoutId);
-                }}
-              />
-              <StickSearchBar />
-            </CollapsibleHeaderContainer>
+        <SafeAreaView className="mt-14" />
+        <CollapsibleContainer style={styles.panelContainer}>
+          <CollapsibleHeaderContainer containerStyle={styles.transparent}>
+            <AnimatedHeader
+              showNotice={() => {
+                SlideDown();
+                const timeoutId = setTimeout(() => {
+                  SlideUp();
+                }, 3500);
+                return () => clearTimeout(timeoutId);
+              }}
+            />
+            <StickSearchBar />
+          </CollapsibleHeaderContainer>
 
-            <CollapsibleScrollView
-              nestedScrollEnabled
-              showsVerticalScrollIndicator={false}
-              style={styles.panelContainer}
-            >
-              <Content />
+          <CollapsibleScrollView
+            nestedScrollEnabled
+            showsVerticalScrollIndicator={false}
+            style={styles.panelContainer}
+          >
+            <Content />
 
-              <View style={{ backgroundColor: "#F8F8F8", padding: 20 }}>
-                <CustomerText
-                  fontSize={RFValue(32)}
-                  fontFamily={Fonts.Bold}
-                  style={{ opacity: 0.2 }}
-                >
-                  Congo's last minute app
-                </CustomerText>
-                <CustomerText
-                  fontFamily={Fonts.Bold}
-                  style={{ opacity: 0.2, marginTop: 10, paddingBottom: 100 }}
-                >
-                  Developed By NGOTH
-                </CustomerText>
-              </View>
-            </CollapsibleScrollView>
-          </CollapsibleContainer>
-        </SafeAreaView>
+            <View style={{ backgroundColor: "#F8F8F8", padding: 20 }}>
+              <CustomerText
+                fontSize={RFValue(32)}
+                fontFamily={Fonts.Bold}
+                style={{ opacity: 0.2 }}
+              >
+                Congo's last minute app
+              </CustomerText>
+              <CustomerText
+                fontFamily={Fonts.Bold}
+                style={{ opacity: 0.2, marginTop: 10, paddingBottom: 100 }}
+              >
+                Developed By NGOTH
+              </CustomerText>
+            </View>
+          </CollapsibleScrollView>
+        </CollapsibleContainer>
       </>
     </NoticeAnimation>
   );
