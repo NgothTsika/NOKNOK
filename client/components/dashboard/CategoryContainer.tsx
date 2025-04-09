@@ -13,7 +13,7 @@ const CategoryContainer: FC<{ data: any }> = ({ data }) => {
           return (
             <ScalePress
               onPress={() =>
-                router.navigate("/features/dashboard/ProductDashboard")
+                router.navigate("/features/category/ProductCategories")
               }
               key={index}
               style={styles.item}

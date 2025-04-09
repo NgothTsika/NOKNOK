@@ -46,6 +46,10 @@ const Layout = () => {
         name="features/dashboard/ProductDashboard"
         options={{ headerShown: false, animation: "fade" }}
       />
+      <Stack.Screen
+        name="features/category/ProductCategories"
+        options={{ headerShown: false, animation: "fade" }}
+      />
     </Stack>
   );
 };
