@@ -50,6 +50,10 @@ const Layout = () => {
         name="features/category/ProductCategories"
         options={{ headerShown: false, animation: "fade" }}
       />
+      <Stack.Screen
+        name="features/order/ProductOrder"
+        options={{ headerShown: false, animation: "simple_push" }}
+      />
     </Stack>
   );
 };

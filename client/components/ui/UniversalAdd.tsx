@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   },
   addText: {
     color: Colors.secondary,
+    textAlign: "center",
   },
   counterContainer: {
     flexDirection: "row",
