@@ -54,6 +54,10 @@ const Layout = () => {
         name="features/order/ProductOrder"
         options={{ headerShown: false, animation: "simple_push" }}
       />
+      <Stack.Screen
+        name="features/order/OrderSuccess"
+        options={{ headerShown: false, animation: "simple_push" }}
+      />
     </Stack>
   );
 };
