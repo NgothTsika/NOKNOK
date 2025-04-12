@@ -14,3 +14,26 @@ export const createOrder = async (items: any, totalPrice: number) => {
     return null;
   }
 };
+
+export const getOrderById = async (id: string) => {
+  try {
+    const response = await appAxios.get(`/order/${id}`);
+    return response.data;
+  } catch (error: any) {
+    const errorData = error?.response?.data;
+    const status = error?.response?.status;
+    const message =
+      errorData?.message ||
+      error?.message ||
+      "Une erreur inconnue s'est produite";
+
+    console.error("Fetch Order Error", {
+      message,
+      status,
+      data: errorData,
+      full: error,
+    });
+
+    return null;
+  }
+};

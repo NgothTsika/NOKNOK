@@ -58,6 +58,10 @@ const Layout = () => {
         name="features/order/OrderSuccess"
         options={{ headerShown: false, animation: "simple_push" }}
       />
+      <Stack.Screen
+        name="features/map/LiveTracking"
+        options={{ headerShown: false, animation: "simple_push" }}
+      />
     </Stack>
   );
 };
