@@ -35,6 +35,14 @@ const Layout = () => {
         options={{ headerShown: false, animation: "fade" }}
       />
       <Stack.Screen
+        name="features/dashboard/ProductDashboard"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
+        name="features/map/LiveTracking"
+        options={{ headerShown: false, animation: "simple_push" }}
+      />
+      <Stack.Screen
         name="features/auth/DeliverLogin"
         options={{ headerShown: false, animation: "fade" }}
       />
@@ -42,10 +50,7 @@ const Layout = () => {
         name="features/auth/CustomerLogin"
         options={{ headerShown: false, animation: "flip" }}
       />
-      <Stack.Screen
-        name="features/dashboard/ProductDashboard"
-        options={{ headerShown: false, animation: "fade" }}
-      />
+
       <Stack.Screen
         name="features/category/ProductCategories"
         options={{ headerShown: false, animation: "fade" }}
@@ -56,10 +61,6 @@ const Layout = () => {
       />
       <Stack.Screen
         name="features/order/OrderSuccess"
-        options={{ headerShown: false, animation: "simple_push" }}
-      />
-      <Stack.Screen
-        name="features/map/LiveTracking"
         options={{ headerShown: false, animation: "simple_push" }}
       />
     </Stack>

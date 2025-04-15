@@ -28,6 +28,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import withCart from "../cart/WithCart";
 
 const NOTICE_HEIGHT = -(NoticeHeight + 12);
 
@@ -167,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withCollapsibleContext(ProductDashboard);
+export default withCart(withCollapsibleContext(ProductDashboard));

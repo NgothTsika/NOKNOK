@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import React, { FC, useEffect } from "react";
 import { useAuthStore } from "@/state/authStore";
 import { getOrderById } from "@/service/orderService";

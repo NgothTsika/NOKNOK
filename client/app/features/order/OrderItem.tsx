@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import React, { FC } from "react";
 import { Colors, Fonts } from "@/utils/Constants";
 import CustomerText from "@/components/ui/CustomText";
