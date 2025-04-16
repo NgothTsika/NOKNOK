@@ -9,6 +9,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import CustomerText from "@/components/ui/CustomText";
 import DeliveryDetails from "./DeliveryDetails";
+import OrderSummary from "./OrderSummary";
+import withLiveStatus from "./withLiveStatus";
 
 const LiveTracking: FC = () => {
   const { currentOrder, setCurrentOrder } = useAuthStore();
@@ -80,6 +82,35 @@ const LiveTracking: FC = () => {
           </View>
         </View>
         <DeliveryDetails details={currentOrder?.customer} />
+        <OrderSummary order={currentOrder} />
+
+        <View style={styles.flexRow}>
+          <View style={styles.iconContainer}>
+            <Ionicons
+              name="heart-outline"
+              color={Colors.disabled}
+              size={RFValue(20)}
+            />
+          </View>
+
+          <View style={{ width: "82%" }}>
+            <CustomerText variants="h7" fontFamily={Fonts.SemiBold}>
+              Do you like our app ?
+            </CustomerText>
+            <CustomerText variants="h9" fontFamily={Fonts.Medium}>
+              Hit like and subscribe button! If you are enjoying comment your
+              excitement
+            </CustomerText>
+          </View>
+        </View>
+
+        <CustomerText
+          fontFamily={Fonts.SemiBold}
+          variants="h6"
+          style={{ opacity: 0.6, marginTop: 20 }}
+        >
+          kokoko shop
+        </CustomerText>
       </ScrollView>
     </View>
   );
@@ -117,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LiveTracking;
+export default withLiveStatus(LiveTracking);
