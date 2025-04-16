@@ -1,4 +1,5 @@
 import CustomerText from "@/components/ui/CustomText";
+import { SOCKET_URL } from "@/service/config";
 import { getOrderById } from "@/service/orderService";
 import { useAuthStore } from "@/state/authStore";
 import { hocStyles } from "@/styles/globalStyles";
@@ -7,6 +8,7 @@ import { useNavigationState } from "@react-navigation/native";
 import { router } from "expo-router";
 import React, { FC, useEffect } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import io from "socket.io-client";
 
 const withLiveStatus = <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -18,10 +20,25 @@ const withLiveStatus = <P extends object>(
     );
 
     useEffect(() => {
-      if (currentOrder?._id) {
-        fetchOrderDetails();
+      if (currentOrder) {
+        const socketInstance = io(SOCKET_URL, {
+          transports: ["websocket"],
+          withCredentials: false,
+        });
+        socketInstance.emit("joinRoom", currentOrder?._id);
+        socketInstance.on("liveTrackingUpdates", (updatedOrder) => {
+          fetchOrderDetails();
+          console.log("RECEIVING LIVE UPDATES");
+        });
+        socketInstance.on("orderConfirmed", (confirmOrder) => {
+          fetchOrderDetails();
+          console.log("ORDER CONFIRMATION LIVE UPDATES");
+        });
+        return () => {
+          socketInstance.disconnect();
+        };
       }
-    }, [currentOrder?._id]);
+    }, [currentOrder]);
 
     const fetchOrderDetails = async () => {
       const data = await getOrderById(currentOrder?._id as any);
@@ -36,7 +53,7 @@ const withLiveStatus = <P extends object>(
             <View
               style={[
                 hocStyles.cartContainer,
-                { flexDirection: "row", alignContent: "center" },
+                { flexDirection: "row", alignItems: "center" },
               ]}
             >
               <View style={styles.flexRow}>
@@ -46,7 +63,7 @@ const withLiveStatus = <P extends object>(
                     style={{ width: 20, height: 20 }}
                   />
                 </View>
-                <View style={{ width: "60%" }}>
+                <View style={{ width: "68%" }}>
                   <CustomerText variants="h7" fontFamily={Fonts.SemiBold}>
                     Order is {currentOrder?.status}
                   </CustomerText>
@@ -103,7 +120,7 @@ const styles = StyleSheet.create({
     height: "auto",
     paddingHorizontal: 10,
     paddingVertical: 2,
-    borderWidth: 0.7,
+    borderWidth: 0.9,
     borderRadius: 5,
     borderColor: Colors.secondary,
   },

@@ -1,16 +1,11 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Platform, TouchableOpacity } from "react-native";
 import React, { FC } from "react";
 import CustomerText from "../ui/CustomText";
 import { Fonts } from "@/utils/Constants";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuthStore } from "@/state/authStore";
+import { router } from "expo-router";
 
 const Header: FC<{ showNotice: () => void }> = ({ showNotice }) => {
   const { setUser, user } = useAuthStore();
@@ -54,7 +49,9 @@ const Header: FC<{ showNotice: () => void }> = ({ showNotice }) => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => router.navigate("/features/profile/Profile")}
+      >
         <Ionicons
           name="person-circle-outline"
           size={RFValue(36)}

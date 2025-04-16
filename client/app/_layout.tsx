@@ -35,6 +35,10 @@ const Layout = () => {
         options={{ headerShown: false, animation: "fade" }}
       />
       <Stack.Screen
+        name="features/profile/Profile"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
         name="features/dashboard/ProductDashboard"
         options={{ headerShown: false, animation: "fade" }}
       />

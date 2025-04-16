@@ -19,21 +19,16 @@ export const getOrderById = async (id: string) => {
   try {
     const response = await appAxios.get(`/order/${id}`);
     return response.data;
-  } catch (error: any) {
-    const errorData = error?.response?.data;
-    const status = error?.response?.status;
-    const message =
-      errorData?.message ||
-      error?.message ||
-      "Une erreur inconnue s'est produite";
-
-    console.error("Fetch Order Error", {
-      message,
-      status,
-      data: errorData,
-      full: error,
-    });
+  } catch (error) {
+    console.log("Fetch Order Error", error);
 
     return null;
   }
+};
+
+export const fetchCustomerOrder = async (userId: string) => {
+  try {
+    const response = await appAxios.get(`/order?customerId=${userId}`);
+    return response.data;
+  } catch (error) {}
 };

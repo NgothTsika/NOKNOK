@@ -8,7 +8,7 @@ import BillDetails from "../order/BillDetails";
 
 const OrderSummary: FC<{ order: any }> = ({ order }) => {
   const totalPrice =
-    order?.item?.reduce(
+    order?.items?.reduce(
       (total: number, cartItem: any) =>
         total + cartItem.item.price * cartItem.count,
       0
