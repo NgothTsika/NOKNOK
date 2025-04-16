@@ -15,30 +15,30 @@ import withLiveStatus from "./withLiveStatus";
 const LiveTracking: FC = () => {
   const { currentOrder, setCurrentOrder } = useAuthStore();
 
+  useEffect(() => {
+    if (currentOrder?._id) {
+      fetchOrderDetails();
+    }
+  }, [currentOrder?._id]);
+
   const fetchOrderDetails = async () => {
     const data = await getOrderById(currentOrder?._id as any);
-    console.log(data);
     setCurrentOrder(data);
   };
 
-  useEffect(() => {
-    fetchOrderDetails();
-  }, []);
-
   let msg = "Packing your order";
-  let time = "Arriving in 1 minutes";
+  let time = "Arriving in 1 minute";
 
-  if (currentOrder?.status == "confirmed") {
+  if (currentOrder?.status === "confirmed") {
     msg = "Arriving Soon";
     time = "Arriving in 8 minutes";
-  } else if (currentOrder?.status == "arriving") {
-    msg = "Order Pricked Soon";
+  } else if (currentOrder?.status === "arriving") {
+    msg = "Order Picked Up";
     time = "Arriving in 6 minutes";
-  } else if (currentOrder?.status == "deliverd") {
+  } else if (currentOrder?.status === "delivered") {
     msg = "Order Delivered";
     time = "Fastest Delivery";
   }
-  console.log(currentOrder);
 
   return (
     <View style={styles.container}>
@@ -48,12 +48,11 @@ const LiveTracking: FC = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <LiveMap />
+
         <View style={styles.flexRow}>
           <View style={styles.iconContainer}>
             <Ionicons
-              name={
-                currentOrder?.deliveryPartner ? "phone-landscape" : "bag-add"
-              }
+              name={currentOrder?.deliveryPartner ? "call" : "bag-add"}
               color={Colors.disabled}
               size={RFValue(20)}
             />
@@ -65,7 +64,7 @@ const LiveTracking: FC = () => {
               fontFamily={Fonts.SemiBold}
             >
               {currentOrder?.deliveryPartner?.name ||
-                "We will soon assign deliver partner"}
+                "We will soon assign a delivery partner"}
             </CustomerText>
 
             {currentOrder?.deliveryPartner && (
@@ -76,11 +75,12 @@ const LiveTracking: FC = () => {
 
             <CustomerText variants="h9" fontFamily={Fonts.Medium}>
               {currentOrder?.deliveryPartner
-                ? "For Delivery instructions you can contact here"
+                ? "For delivery instructions, you can contact them here"
                 : msg}
             </CustomerText>
           </View>
         </View>
+
         <DeliveryDetails details={currentOrder?.customer} />
         <OrderSummary order={currentOrder} />
 
@@ -95,11 +95,11 @@ const LiveTracking: FC = () => {
 
           <View style={{ width: "82%" }}>
             <CustomerText variants="h7" fontFamily={Fonts.SemiBold}>
-              Do you like our app ?
+              Do you like our app?
             </CustomerText>
             <CustomerText variants="h9" fontFamily={Fonts.Medium}>
-              Hit like and subscribe button! If you are enjoying comment your
-              excitement
+              Hit the like and subscribe button! If you are enjoying, leave a
+              comment!
             </CustomerText>
           </View>
         </View>
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: "10",
     width: "100%",
     borderRadius: 15,
     marginTop: 15,
@@ -136,6 +135,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "center",
     alignContent: "center",
+    marginRight: 10,
   },
   container: {
     flex: 1,
