@@ -2,22 +2,24 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import React, { FC, useEffect, useState } from "react";
 import { useAuthStore } from "@/state/authStore";
 import { useCartStore } from "@/state/cartStore";
-import { fetchCustomerOrder } from "@/service/orderService";
+import { fetchCustomerOrders } from "@/service/orderService";
 import CustomerText from "@/components/ui/CustomText";
 import { Fonts } from "@/utils/Constants";
 import CustomHeader from "@/components/ui/CustomHeader";
-import WalletSection from "./WalletSection";
 import ActionButton from "./ActionButton";
 import OrderItem from "./OrderItem";
+import WalletSection from "./WalletSection";
+import { router } from "expo-router";
+import { asyncStorage } from "@/state/storage";
 
 const Profile: FC = () => {
-  const [orders, setOrder] = useState([]);
+  const [orders, setOrders] = useState([]);
   const { logout, user } = useAuthStore();
   const { clearCart } = useCartStore();
 
   const fetchOrders = async () => {
-    const data = await fetchCustomerOrder(user?._id);
-    setOrder(data);
+    const data = await fetchCustomerOrders(user?._id);
+    setOrders(data);
   };
 
   useEffect(() => {
@@ -34,17 +36,32 @@ const Profile: FC = () => {
           {user?.phone}
         </CustomerText>
         <WalletSection />
-
         <CustomerText variants="h8" style={styles.information}>
           YOUR INFORMATION
         </CustomerText>
         <ActionButton icon="book-outline" label="Address book" />
+        <ActionButton icon="information-circle-outline" label="About us" />
+        <ActionButton
+          icon="log-out-outline"
+          label="Logout"
+          onPress={async () => {
+            clearCart();
+            logout();
+
+            await asyncStorage.clearAll(); // Clears all stored items
+
+            router.navigate("/features/auth/CustomerLogin");
+          }}
+        />
+        <CustomerText variants="h8" style={styles.pastTest}>
+          PAST ORDERS
+        </CustomerText>
       </View>
     );
   };
 
-  const renderOrders = ({ item }: any) => {
-    return <OrderItem />;
+  const renderOrders = ({ item, index }: any) => {
+    return <OrderItem item={item} index={index} />;
   };
 
   return (
@@ -52,7 +69,7 @@ const Profile: FC = () => {
       <CustomHeader title="Profile" />
       <FlatList
         data={orders}
-        ListEmptyComponent={renderHeader}
+        ListHeaderComponent={renderHeader}
         renderItem={renderOrders}
         keyExtractor={(item: any) => item?.orderId}
         contentContainerStyle={styles.scrollViewContent}

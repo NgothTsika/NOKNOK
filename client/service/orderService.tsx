@@ -26,9 +26,12 @@ export const getOrderById = async (id: string) => {
   }
 };
 
-export const fetchCustomerOrder = async (userId: string) => {
+export const fetchCustomerOrders = async (userId: string) => {
   try {
     const response = await appAxios.get(`/order?customerId=${userId}`);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    console.log("Fectch Customer Order Error", error);
+    return;
+  }
 };

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
 import { Colors } from "@/utils/Constants";
 import WalletItem from "./WalletItem";
@@ -15,7 +15,7 @@ const WalletSection = () => {
 
 const styles = StyleSheet.create({
   walletContainer: {
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.backgroundSecondary,
