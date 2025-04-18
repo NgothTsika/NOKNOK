@@ -35,7 +35,15 @@ const Layout = () => {
         options={{ headerShown: false, animation: "fade" }}
       />
       <Stack.Screen
+        name="features/delivery/DeliveryMap"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
         name="features/profile/Profile"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
+        name="features/profile/PastOrders"
         options={{ headerShown: false, animation: "fade" }}
       />
       <Stack.Screen

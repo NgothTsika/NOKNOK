@@ -35,3 +35,39 @@ export const fetchCustomerOrders = async (userId: string) => {
     return;
   }
 };
+
+export const fetchOrders = async (
+  status: string,
+  userId: string,
+  branchId: string
+) => {
+  let uri =
+    status == "available"
+      ? `/order?status=${status}&branchId=${branchId}`
+      : `/order?branchId=${branchId}&deliveryPartnerId=${userId}&status=delivered`;
+  try {
+    const response = await appAxios.get(uri);
+    return response.data;
+  } catch (error) {
+    console.log("Fectch Delivery Order Error", error);
+    return;
+  }
+};
+
+export const sendLiveOrderUpdates = async (
+  id: string,
+  location: any,
+  status: string
+) => {
+  try {
+    const response = await appAxios.patch(`/order/${id}/status`, {
+      deliveryPersonLocation: location,
+      status,
+    });
+    return response.data;
+  } catch (error) {
+    console.log("sendLiveOrderUpdates Error", error);
+
+    return null;
+  }
+};

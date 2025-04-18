@@ -1,6 +1,8 @@
 export const formatISOCustom = (isoString: string) => {
   const date = new Date(isoString);
 
+  if (isNaN(date.getTime())) return "Invalid date";
+
   const months = [
     "Jan",
     "Feb",
@@ -11,12 +13,11 @@ export const formatISOCustom = (isoString: string) => {
     "Jul",
     "Aug",
     "Sep",
-    "Aug",
-    "Sep",
     "Oct",
     "Nov",
     "Dec",
   ];
+
   const hours = String(date.getUTCHours()).padStart(2, "0");
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
   const seconds = String(date.getUTCSeconds()).padStart(2, "0");

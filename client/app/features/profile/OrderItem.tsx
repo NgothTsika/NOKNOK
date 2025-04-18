@@ -14,7 +14,7 @@ interface Order {
   orderId: string;
   items: CartItem[];
   totalPrice: number;
-  createAt: string;
+  createdAt: string;
   status: "confirmed" | "completed";
 }
 
@@ -51,7 +51,7 @@ const OrderItem: FC<{ item: Order; index: number }> = ({ item, index }) => {
             ${item.totalPrice}
           </CustomerText>
           <CustomerText variants="h9">
-            {formatISOCustom(item.createAt)}
+            {formatISOCustom(item.createdAt)}
           </CustomerText>
         </View>
       </View>
