@@ -1,29 +1,33 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Alert } from "react-native";
 import React, { FC, useEffect, useState } from "react";
 import { useAuthStore } from "@/state/authStore";
-import { getOrderById, sendLiveOrderUpdates } from "@/service/orderService";
+import {
+  confirmOrder,
+  getOrderById,
+  sendLiveOrderUpdates,
+} from "@/service/orderService";
 import { Colors, Fonts } from "@/utils/Constants";
 import { Ionicons } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import CustomerText from "@/components/ui/CustomText";
-import { useRoute } from "@react-navigation/native";
 import LiveHeader from "../map/LiveHeader";
 import LiveMap from "../map/LiveMap";
 import DeliveryDetails from "../map/DeliveryDetails";
 import OrderSummary from "../map/OrderSummary";
 import * as Location from "expo-location";
+import { useLocalSearchParams } from "expo-router"; // ✅ Import this
+import { hocStyles } from "@/styles/globalStyles";
+import CustomButton from "@/components/ui/CustomButton";
 
 const DeliveryMap: FC = () => {
   const user = useAuthStore((state) => state.user);
   const [orderData, setOrderData] = useState<any>(null);
   const [myLocation, setMyLocation] = useState<any>(null);
-  const route = useRoute();
-  const orderDetails = route?.params as Record<string, any>;
-
+  const { data } = useLocalSearchParams(); // ✅ Fetch param
+  const orderDetails = JSON.parse(data as string); // ✅ Parse it to get order details
   const { setCurrentOrder } = useAuthStore();
-
   const fetchOrderDetails = async () => {
-    const data = await getOrderById(String(orderDetails?._id));
+    const data = await getOrderById(String(orderDetails?._id)); // 🟢 Now this will work the same
     setOrderData(data);
   };
 
@@ -80,11 +84,51 @@ const DeliveryMap: FC = () => {
     updateLiveLocation();
   }, [myLocation]);
 
+  const acceptOrder = async () => {
+    const data = await confirmOrder(orderData?._id, myLocation);
+    if (data) {
+      setCurrentOrder(data);
+      Alert.alert("Order Accepted, Grab your Package");
+    } else {
+      Alert.alert("There was an error");
+    }
+    fetchOrderDetails();
+  };
+  const orderPickedUp = async () => {
+    const data = await sendLiveOrderUpdates(
+      orderData?._id,
+      myLocation,
+      "arriving"
+    );
+    if (data) {
+      setCurrentOrder(data);
+      Alert.alert("Order Accepted, Grab your Package");
+    } else {
+      Alert.alert("There was an error");
+    }
+    fetchOrderDetails();
+  };
+  const orderDelivered = async () => {
+    const data = await sendLiveOrderUpdates(
+      orderData?._id,
+      myLocation,
+      "delivered"
+    );
+    if (data) {
+      setCurrentOrder(data);
+      Alert.alert("Order Accepted, Grab your Package");
+    } else {
+      Alert.alert("There was an error");
+    }
+    fetchOrderDetails();
+  };
+
   let message = "start this order";
   if (orderData?.deliveryPartner?._id === user?._id) {
     if (orderData?.status === "confirmed") message = "Grab your order";
     else if (orderData?.status === "arriving") message = "Complete your order";
-    else if (orderData?.status === "delivered") message = "Your milestone";
+    else if (orderData?.status?.toLowerCase() === "delivered")
+      message = "Your milestone";
   } else if (orderData?.status !== "available") {
     message = "You missed it!";
   }
@@ -134,13 +178,43 @@ const DeliveryMap: FC = () => {
       </ScrollView>
 
       {orderData?.status != "delivered" && orderData?.status != "cancelled" && (
-        <View></View>
+        <View style={[hocStyles.cartContainer, styles.btnContainer]}>
+          {orderData?.status == "pending" && (
+            <CustomButton
+              onPress={acceptOrder}
+              loading={false}
+              disabled={false}
+              title="Accept Order"
+            />
+          )}
+          {orderData?.status == "confirmed" &&
+            orderData?.deliveryPartner?._id === user?._id && (
+              <CustomButton
+                onPress={orderPickedUp}
+                loading={false}
+                disabled={false}
+                title="Order Picked Up"
+              />
+            )}
+          {orderData?.status == "arriving" &&
+            orderData?.deliveryPartner?._id === user?._id && (
+              <CustomButton
+                onPress={orderDelivered}
+                loading={false}
+                disabled={false}
+                title="Delivered"
+              />
+            )}
+        </View>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    padding: 10,
+  },
   flexRow: {
     flexDirection: "row",
     alignItems: "center",

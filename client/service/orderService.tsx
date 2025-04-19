@@ -42,9 +42,10 @@ export const fetchOrders = async (
   branchId: string
 ) => {
   let uri =
-    status == "available"
+    status == "pending"
       ? `/order?status=${status}&branchId=${branchId}`
       : `/order?branchId=${branchId}&deliveryPartnerId=${userId}&status=delivered`;
+
   try {
     const response = await appAxios.get(uri);
     return response.data;
@@ -67,6 +68,18 @@ export const sendLiveOrderUpdates = async (
     return response.data;
   } catch (error) {
     console.log("sendLiveOrderUpdates Error", error);
+
+    return null;
+  }
+};
+export const confirmOrder = async (id: string, location: any) => {
+  try {
+    const response = await appAxios.post(`/order/${id}/confirm`, {
+      deliveryPersonLocation: location,
+    });
+    return response.data;
+  } catch (error) {
+    console.log("confirmOrder Error", error);
 
     return null;
   }

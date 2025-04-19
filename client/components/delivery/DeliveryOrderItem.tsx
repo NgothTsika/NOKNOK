@@ -1,10 +1,10 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { FC } from "react";
 import { Colors, Fonts } from "@/utils/Constants";
-import CustomerText from "../ui/CustomText";
 import { RFValue } from "react-native-responsive-fontsize";
-import { formatISOCustom } from "@/utils/DateUtils";
 import { Ionicons } from "@expo/vector-icons";
+import CustomerText from "../ui/CustomText";
+import { formatISOCustom } from "@/utils/DateUtils";
 import { router } from "expo-router";
 
 interface CartItem {
@@ -16,18 +16,15 @@ interface CartItem {
 interface Order {
   orderId: string;
   items: CartItem[];
-  deliveryLocation: {
-    address: string;
-    coordinates: [number, number];
-  };
+  deliveryLocation: any;
   totalPrice: number;
   createdAt: string;
-  status: "available" | "confirmed" | "delivered" | "cancelled";
+  status: "confirmed" | "completed";
 }
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
-    case "available":
+    case "pending":
       return "#28a745";
     case "confirmed":
       return "#007bff";
@@ -39,19 +36,10 @@ const getStatusColor = (status: string) => {
       return "#6c757d";
   }
 };
-
-const OrderItem: FC<{ item: Order; index?: number }> = ({ item, index }) => {
-  const goToMap = () => {
-    router.navigate({
-      pathname: "/features/delivery/DeliveryMap",
-      params: {
-        orderId: item.orderId,
-        lat: item.deliveryLocation?.coordinates?.[1]?.toString(),
-        lng: item.deliveryLocation?.coordinates?.[0]?.toString(),
-      },
-    });
-  };
-
+const DeliveryOrderItem: FC<{ item: Order; index: number }> = ({
+  item,
+  index,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.flexRowBetween}>
@@ -71,24 +59,37 @@ const OrderItem: FC<{ item: Order; index?: number }> = ({ item, index }) => {
       </View>
 
       <View style={{ marginTop: 8 }}>
-        {item.items.slice(0, 2).map((i, idx) => (
-          <CustomerText variants="h8" numberOfLines={1} key={idx}>
-            {i.count}x {i.item.name}
-          </CustomerText>
-        ))}
+        {item.items.slice(0, 2).map((i, idx) => {
+          return (
+            <CustomerText variants="h8" numberOfLines={1} key={idx}>
+              {i.count}x {i.item.name}
+            </CustomerText>
+          );
+        })}
       </View>
 
       <View style={[styles.flexRowBetween, styles.addressTextContainer]}>
         <View style={styles.addressContainer}>
           <CustomerText variants="h8" numberOfLines={1}>
-            {item.deliveryLocation.address}
+            {item.deliveryLocation?.address}
           </CustomerText>
           <CustomerText style={styles.dateText}>
-            {formatISOCustom(item.createdAt)}
+            {formatISOCustom(item?.createdAt)}
           </CustomerText>
         </View>
 
-        <TouchableOpacity style={styles.iconContainer} onPress={goToMap}>
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => {
+            router.push({
+              pathname: "/features/delivery/DeliveryMap",
+              params: {
+                orderId: item.orderId,
+                data: JSON.stringify(item),
+              },
+            });
+          }}
+        >
           <Ionicons
             name="arrow-forward-circle"
             size={RFValue(24)}
@@ -99,9 +100,6 @@ const OrderItem: FC<{ item: Order; index?: number }> = ({ item, index }) => {
     </View>
   );
 };
-
-export default OrderItem;
-
 const styles = StyleSheet.create({
   container: {
     borderWidth: 0.7,
@@ -145,3 +143,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default DeliveryOrderItem;

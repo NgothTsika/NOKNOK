@@ -4,8 +4,8 @@ import { Colors, Fonts } from "@/utils/Constants";
 import CustomerText from "@/components/ui/CustomText";
 
 interface TabBarPropos {
-  selectedTab: "available" | "delivered";
-  onTabChange: (tab: "available" | "delivered") => void;
+  selectedTab: "pending" | "delivered";
+  onTabChange: (tab: "pending" | "delivered") => void;
 }
 
 const TabBar: FC<TabBarPropos> = ({ selectedTab, onTabChange }) => {
@@ -13,15 +13,15 @@ const TabBar: FC<TabBarPropos> = ({ selectedTab, onTabChange }) => {
     <View style={styles.tabContainer}>
       <TouchableOpacity
         activeOpacity={0.8}
-        style={[styles.tab, selectedTab == "available" && styles.activeTab]}
-        onPress={() => onTabChange("available")}
+        style={[styles.tab, selectedTab == "pending" && styles.activeTab]}
+        onPress={() => onTabChange("pending")}
       >
         <CustomerText
           variants="h8"
           fontFamily={Fonts.SemiBold}
           style={[
             styles.tabText,
-            selectedTab === "available"
+            selectedTab === "pending"
               ? styles.activeTabText
               : styles.inactivetabText,
           ]}
@@ -31,7 +31,7 @@ const TabBar: FC<TabBarPropos> = ({ selectedTab, onTabChange }) => {
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.8}
-        style={[styles.tab, selectedTab != "available" && styles.activeTab]}
+        style={[styles.tab, selectedTab != "pending" && styles.activeTab]}
         onPress={() => onTabChange("delivered")}
       >
         <CustomerText
@@ -39,7 +39,7 @@ const TabBar: FC<TabBarPropos> = ({ selectedTab, onTabChange }) => {
           fontFamily={Fonts.SemiBold}
           style={[
             styles.tabText,
-            selectedTab !== "available"
+            selectedTab !== "pending"
               ? styles.activeTabText
               : styles.inactivetabText,
           ]}

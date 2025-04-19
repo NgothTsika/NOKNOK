@@ -31,6 +31,9 @@ const PastOrders: FC = () => {
   return (
     <View style={styles.container}>
       <CustomHeader title="Past Orders" />
+      <CustomerText variants="h8" style={styles.information}>
+        YOUR INFORMATION
+      </CustomerText>
       {orders.length > 0 ? (
         <FlatList
           data={orders}
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  information: { opacity: 0.7, marginVertical: 20, paddingHorizontal: 10 },
 });
 
 export default PastOrders;

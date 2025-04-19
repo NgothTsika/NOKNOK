@@ -9,24 +9,24 @@ import React, { useEffect, useState } from "react";
 import { Colors } from "@/utils/Constants";
 import DeliveryHeader from "@/components/delivery/DeliveryHeader";
 import { useAuthStore } from "@/state/authStore";
-import TabBar from "./TabBar";
+import TabBar from "@/components/delivery/TabBar";
 import { fetchOrders } from "@/service/orderService";
 import { RefreshControl } from "react-native-gesture-handler";
 import CustomerText from "@/components/ui/CustomText";
-import OrderItem from "@/components/delivery/OrderItem";
+import DeliveryOrderItem from "@/components/delivery/DeliveryOrderItem";
 
 const DeliveryDashboard = () => {
   const { user } = useAuthStore();
-  const [selectedTab, setSelectedTab] = useState<"available" | "delivered">(
-    "available"
+  const [selectedTab, setSelectedTab] = useState<"pending" | "delivered">(
+    "pending"
   );
-  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(true);
+  const [data, setData] = useState<any[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const renderOrderItem = ({ item, index }: any) => {
-    return <OrderItem index={index} item={item} />;
-  };
+  const renderOrderItem = ({ item, index }: any) => (
+    <DeliveryOrderItem index={index} item={item} />
+  );
 
   const fetchData = async () => {
     setData([]);
@@ -49,6 +49,7 @@ const DeliveryDashboard = () => {
       </SafeAreaView>
       <View style={styles.subContainer}>
         <TabBar selectedTab={selectedTab} onTabChange={setSelectedTab} />
+
         <FlatList
           data={data}
           refreshControl={
@@ -67,12 +68,12 @@ const DeliveryDashboard = () => {
             }
             return (
               <View style={styles.center}>
-                <CustomerText>No Orders found found yet!</CustomerText>
+                <CustomerText>No Orders found yet!</CustomerText>
               </View>
             );
           }}
           renderItem={renderOrderItem}
-          keyExtractor={(item) => item.order}
+          keyExtractor={(item) => item.orderId}
           contentContainerStyle={styles.flatlistContainer}
         />
       </View>
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
   },
   flatlistContainer: {
     padding: 2,
+    flexGrow: 1,
   },
   center: {
     flex: 1,
