@@ -24,12 +24,16 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient"; // Use expo-linear-gradient
 import { customerLogin } from "@/service/authService";
 import { router } from "expo-router";
+import { getAndSendLocation } from "@/utils/locationHelprs";
+import { useAuthStore } from "@/state/authStore";
+import { asyncStorage } from "@/state/storage";
 
 const bottomColors: [string, string, ...string[]] = [
   ...lightColors,
 ].reverse() as [string, string, ...string[]];
 
 const CustomerLogin: FC = () => {
+  const { setUser } = useAuthStore();
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [gestureSequence, setGestureSequence] = useState<string[]>([]);
@@ -53,12 +57,59 @@ const CustomerLogin: FC = () => {
     }
   }, [keyboardOffsetHeight]);
 
+  // const handleAuth = async () => {
+  //   Keyboard.dismiss();
+  //   setLoading(true);
+  //   try {
+  //     await customerLogin(phoneNumber);
+  //     await getAndSendLocation(setUser);
+  //     router.replace("/features/dashboard/ProductDashboard");
+  //   } catch (error: any) {
+  //     if (error.response?.status === 401) {
+  //       Alert.alert("Unauthorized", "Invalid phone number or credentials");
+  //     } else {
+  //       Alert.alert("Login Failed", "An unexpected error occurred");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // const handleAuth = async () => {
+  //   Keyboard.dismiss();
+  //   setLoading(true);
+  //   try {
+  //     const user = await customerLogin(phoneNumber);
+  //     if (user) {
+  //       await asyncStorage.setItem("user", JSON.stringify(user));
+  //       setUser(user);
+  //       await getAndSendLocation(setUser);
+  //       router.replace("/features/dashboard/ProductDashboard");
+  //     } else {
+  //       Alert.alert("Login Failed", "No user returned from server");
+  //     }
+  //   } catch (error: any) {
+  //     if (error.response?.status === 401) {
+  //       Alert.alert("Unauthorized", "Invalid phone number or credentials");
+  //     } else {
+  //       Alert.alert("Login Failed", "An unexpected error occurred");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleAuth = async () => {
     Keyboard.dismiss();
     setLoading(true);
     try {
-      await customerLogin(phoneNumber);
-      router.replace("/features/dashboard/ProductDashboard");
+      const user = await customerLogin(phoneNumber); // tokens are already saved in customerLogin
+      if (user) {
+        await asyncStorage.setItem("user", JSON.stringify(user)); // optional if you still want to cache the user
+        setUser(user);
+        await getAndSendLocation(setUser);
+        router.replace("/features/dashboard/ProductDashboard");
+      } else {
+        Alert.alert("Login Failed", "No user returned from server");
+      }
     } catch (error: any) {
       if (error.response?.status === 401) {
         Alert.alert("Unauthorized", "Invalid phone number or credentials");

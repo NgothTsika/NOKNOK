@@ -15,9 +15,12 @@ import { Fonts } from "@/utils/Constants";
 import CustomInput from "@/components/ui/CustomInput";
 import { Ionicons } from "@expo/vector-icons";
 import CustomButton from "@/components/ui/CustomButton";
-// import { resetAndNavigate } from "@/utils/NavigationUtils";
+import { getAndSendLocation } from "@/utils/locationHelprs";
+import { useAuthStore } from "@/state/authStore";
+import { asyncStorage } from "@/state/storage";
 
 const DeliverLogin: FC = () => {
+  const { setUser } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,14 +28,40 @@ const DeliverLogin: FC = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      await deliveryLogin(email, password);
-      router.navigate("/features/delivery/DeliveryDashboard");
+      const user = await deliveryLogin(email, password); // tokens are already saved in deliveryLogin
+      if (user) {
+        await asyncStorage.setItem("user", JSON.stringify(user)); // optional
+        setUser(user);
+        await getAndSendLocation(setUser);
+        router.navigate("/features/delivery/DeliveryDashboard");
+      } else {
+        Alert.alert("Login Failed", "Invalid credentials or no user returned.");
+      }
     } catch (error) {
-      Alert.alert("Login Failed");
+      Alert.alert("Login Failed", "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  // const handleLogin = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const user = await deliveryLogin(email, password);
+  //     if (user) {
+  //       await asyncStorage.setItem("user", JSON.stringify(user));
+  //       setUser(user);
+  //       await getAndSendLocation(setUser);
+  //       router.navigate("/features/delivery/DeliveryDashboard");
+  //     } else {
+  //       Alert.alert("Login Failed", "Invalid credentials or no user returned.");
+  //     }
+  //   } catch (error) {
+  //     Alert.alert("Login Failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <SafeAreaView>
@@ -90,7 +119,7 @@ const DeliverLogin: FC = () => {
             right={false}
           />
           <CustomButton
-            disabled={email.length == 0 || password.length < 8}
+            disabled={email.length === 0 || password.length < 8}
             title="Login"
             onPress={handleLogin}
             loading={loading}

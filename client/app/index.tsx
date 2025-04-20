@@ -1,8 +1,6 @@
 import React from "react";
 import SplashScreen from "./features/auth/SplashScreen";
 
-const Main = () => {
+export default function Index() {
   return <SplashScreen />;
-};
-
-export default Main;
+}

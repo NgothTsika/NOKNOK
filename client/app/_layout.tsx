@@ -1,8 +1,7 @@
-import React from "react";
 import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
-import { useEffect, useState } from "react";
 import { Stack } from "expo-router";
+import React from "react";
 import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
 import "../global.css";
@@ -16,65 +15,23 @@ const Layout = () => {
     "Okra-ExtraBold": require("../assets/fonts/Okra-ExtraBold.ttf"),
   });
 
-  const [hasNavigated, setHasNavigated] = useState(false);
-
-  useEffect(() => {
-    if (fontsLoaded && !hasNavigated) {
-      const timeoutId = setTimeout(() => {
-        setHasNavigated(true);
-      }, 3000);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [fontsLoaded, hasNavigated]);
+  if (!fontsLoaded) return null; // Avoid rendering Stack early
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="features/auth/SplashScreen"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/delivery/DeliveryMap"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/profile/Profile"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/profile/PastOrders"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/dashboard/ProductDashboard"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/map/LiveTracking"
-        options={{ headerShown: false, animation: "simple_push" }}
-      />
-      <Stack.Screen
-        name="features/auth/DeliverLogin"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/auth/CustomerLogin"
-        options={{ headerShown: false, animation: "flip" }}
-      />
-
-      <Stack.Screen
-        name="features/category/ProductCategories"
-        options={{ headerShown: false, animation: "fade" }}
-      />
-      <Stack.Screen
-        name="features/order/ProductOrder"
-        options={{ headerShown: false, animation: "simple_push" }}
-      />
-      <Stack.Screen
-        name="features/order/OrderSuccess"
-        options={{ headerShown: false, animation: "simple_push" }}
-      />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="features/auth/SplashScreen" />
+      <Stack.Screen name="features/auth/DeliverLogin" />
+      <Stack.Screen name="features/auth/CustomerLogin" />
+      <Stack.Screen name="features/dashboard/ProductDashboard" />
+      <Stack.Screen name="features/dashboard/DeliveryDashboard" />
+      <Stack.Screen name="features/delivery/DeliveryMap" />
+      <Stack.Screen name="features/profile/Profile" />
+      <Stack.Screen name="features/profile/PastOrders" />
+      <Stack.Screen name="features/map/LiveTracking" />
+      <Stack.Screen name="features/category/ProductCategories" />
+      <Stack.Screen name="features/order/ProductOrder" />
+      <Stack.Screen name="features/order/OrderSuccess" />
     </Stack>
   );
 };

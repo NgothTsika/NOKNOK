@@ -15,7 +15,7 @@ import LiveMap from "../map/LiveMap";
 import DeliveryDetails from "../map/DeliveryDetails";
 import OrderSummary from "../map/OrderSummary";
 import * as Location from "expo-location";
-import { useLocalSearchParams } from "expo-router"; // ✅ Import this
+import { useLocalSearchParams } from "expo-router";
 import { hocStyles } from "@/styles/globalStyles";
 import CustomButton from "@/components/ui/CustomButton";
 
@@ -49,7 +49,7 @@ const DeliveryMap: FC = () => {
         {
           accuracy: Location.Accuracy.High,
           timeInterval: 3000,
-          distanceInterval: 2,
+          distanceInterval: 10,
         },
         (location) => {
           const { latitude, longitude } = location.coords;
@@ -144,7 +144,16 @@ const DeliveryMap: FC = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <LiveMap />
+        <LiveMap
+          deliveryLocation={orderData?.deliveryPersonLocation || myLocation}
+          deliveryPersonLocation={orderData?.deliveryLocation || null}
+          hasAccepted={
+            orderData?.deliveryPartner?._id == user?._id &&
+            orderData?.status == "confirmed"
+          }
+          hasPickedUp={orderData?.status == "arriving"}
+          pickupLocation={orderData?.pickupLocation || null}
+        />
         <DeliveryDetails details={orderData?.customer} />
         <OrderSummary order={orderData} />
 
