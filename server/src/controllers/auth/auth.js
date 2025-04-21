@@ -15,17 +15,25 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken };
 };
 
+// cutomer login
 export const loginCustomer = async (req, reply) => {
   try {
     const { phone } = req.body;
     let customer = await Customer.findOne({ phone });
     if (!customer) {
-      customer = new Customer({
-        phone,
-        role: "Customer",
-      });
-      await customer.save();
+      customer = new Customer({ phone, role: "Customer" });
+      try {
+        await customer.save();
+      } catch (err) {
+        if (err.code === 11000) {
+          return reply
+            .status(400)
+            .send({ message: "Phone number already in use." });
+        }
+        throw err; // rethrow if it's not a duplicate error
+      }
     }
+
     const { accessToken, refreshToken } = generateTokens(customer);
     return reply.send({
       message: customer ? "Login Successful" : "Customer created and logged in",
@@ -42,10 +50,23 @@ export const loginCustomer = async (req, reply) => {
 export const loginDeliveryPartner = async (req, reply) => {
   try {
     const { email, password } = req.body;
-    const deliveryPartner = await DeliveryPartner.findOne({ email });
+    let deliveryPartner = await DeliveryPartner.findOne({ email });
 
     if (!deliveryPartner) {
-      return reply.status(404).send({ message: "Delivery Partner not found" });
+      const newPartner = new DeliveryPartner({
+        email,
+        password,
+        role: "DeliveryPartner",
+      });
+      try {
+        await newPartner.save();
+        deliveryPartner = newPartner;
+      } catch (err) {
+        if (err.code === 11000) {
+          return reply.status(400).send({ message: "Email already in use." });
+        }
+        throw err;
+      }
     }
 
     const isMatch = password === deliveryPartner.password;
@@ -63,7 +84,7 @@ export const loginDeliveryPartner = async (req, reply) => {
       deliveryPartner,
     });
   } catch (error) {
-    return reply.status(500).send({ message: "An  erro occurred", error });
+    return reply.status(500).send({ message: "An error occurred", error });
   }
 };
 

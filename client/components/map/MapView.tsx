@@ -22,8 +22,8 @@ const MapViewComponent = ({
       style={{ flex: 1 }}
       // ✅ Use native map provider (no Google Maps key required)
       initialRegion={{
-        latitude: yourLocation?.latitude || 5.614818,
-        longitude: yourLocation?.longitude || -0.205874,
+        latitude: yourLocation?.latitude,
+        longitude: yourLocation?.longitude,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
       }}
