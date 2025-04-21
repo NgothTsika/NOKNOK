@@ -11,16 +11,6 @@ const productSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
-  quantity: {
-    type: String,
-    required: true,
-    min: 0,
-  },
-  branch: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Branch",
-    required: true,
-  },
 });
 
 const Product = mongoose.model("Product", productSchema);
