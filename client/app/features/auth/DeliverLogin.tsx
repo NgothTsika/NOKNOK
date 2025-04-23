@@ -33,7 +33,7 @@ const DeliverLogin: FC = () => {
         await asyncStorage.setItem("user", JSON.stringify(user)); // optional
         setUser(user);
         await getAndSendLocation(setUser);
-        router.navigate("/features/delivery/DeliveryDashboard");
+        router.replace("/features/delivery/DeliveryDashboard"); // use replace to avoid going back to login;
       } else {
         Alert.alert("Login Failed", "Invalid credentials or no user returned.");
       }

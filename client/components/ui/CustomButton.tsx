@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
 import CustomerText from "./CustomText";
 
 interface CustomButtonProps {
-  onPress: () => void;
+  onPress: () => Promise<void>;
   title: string;
   disabled: boolean;
   loading: boolean;

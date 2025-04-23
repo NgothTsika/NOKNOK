@@ -31,7 +31,7 @@ const deliveryPartnerSchema = new mongoose.Schema({
   ...userSchema.obj,
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  phone: { type: Number, required: true },
+  phone: { type: Number, required: false },
   role: { type: String, enum: ["DeliveryPartner"], default: "DeliveryPartner" },
   liveLocation: {
     latitude: { type: Number },

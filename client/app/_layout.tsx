@@ -27,6 +27,7 @@ const Layout = () => {
       <Stack.Screen name="features/delivery/DeliveryDashboard" />
       <Stack.Screen name="features/delivery/DeliveryMap" />
       <Stack.Screen name="features/profile/Profile" />
+      <Stack.Screen name="features/delivery/DeliveryProfileEdit" />
       <Stack.Screen name="features/profile/PastOrders" />
       <Stack.Screen name="features/map/LiveTracking" />
       <Stack.Screen name="features/category/ProductCategories" />

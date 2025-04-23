@@ -35,7 +35,13 @@ const LiveMap: FC<LiveMapProps> = ({
         deliveryPersonLocation
       );
     }
-  }, [mapRef, deliveryPersonLocation, hasAccepted, hasPickedUp]);
+  }, [
+    mapRef,
+    deliveryPersonLocation,
+    hasAccepted,
+    hasPickedUp,
+    deliveryLocation,
+  ]);
   return (
     <View style={styles.container}>
       <MapViewComponent

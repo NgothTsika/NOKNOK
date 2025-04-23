@@ -1,3 +1,4 @@
+// DeliveryDashboard.tsx
 import {
   View,
   SafeAreaView,
@@ -19,7 +20,7 @@ import * as Location from "expo-location";
 import withLiveOrder from "./withLiveOrder";
 
 const DeliveryDashboard: FC = () => {
-  const { user, setUser } = useAuthStore();
+  const { user, setUser, currentOrder, setCurrentOrder } = useAuthStore();
   const [selectedTab, setSelectedTab] = useState<"pending" | "delivered">(
     "pending"
   );
@@ -31,10 +32,9 @@ const DeliveryDashboard: FC = () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Permission to access location was denied");
+        console.log("Location permission denied");
         return;
       }
-
       const location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
       reverseGeocode(latitude, longitude, setUser);
@@ -52,13 +52,12 @@ const DeliveryDashboard: FC = () => {
   );
 
   const fetchData = async () => {
-    setData([]);
-    setRefreshing(true);
     setLoading(true);
-    const data = await fetchOrders(selectedTab, user?._id, user?.branch);
-    setData(data);
-    setRefreshing(false);
+    setRefreshing(true);
+    const orders = await fetchOrders(selectedTab, user?._id, user?.branch);
+    setData(orders);
     setLoading(false);
+    setRefreshing(false);
   };
 
   useEffect(() => {
@@ -76,10 +75,7 @@ const DeliveryDashboard: FC = () => {
         <FlatList
           data={data}
           refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={async () => await fetchData()}
-            />
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
           }
           ListEmptyComponent={() => {
             if (loading) {

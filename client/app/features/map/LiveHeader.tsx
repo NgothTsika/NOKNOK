@@ -23,13 +23,13 @@ const LiveHeader: FC<{
           style={styles.backButton}
           onPress={() => {
             if (isCustomer) {
-              router.navigate("/features/dashboard/ProductDashboard");
+              router.back();
               if (currentOrder?.status == "delivered") {
                 setCurrentOrder(null);
               }
               return;
             }
-            router.navigate("/features/delivery/DeliveryDashboard");
+            router.back();
           }}
         >
           <Ionicons

@@ -17,11 +17,18 @@ const DeliveryHeader: FC<DeliveryHeaderProps> = ({ name, email }) => {
   return (
     <View style={styles.flexRow}>
       <View style={styles.imgContainer}>
-        <Image
-          source={require("@assets/images/delivery_boy.png")}
-          style={styles.img}
-        />
+        <TouchableOpacity
+          onPress={() =>
+            router.navigate("/features/delivery/DeliveryProfileEdit")
+          }
+        >
+          <Image
+            source={require("@assets/images/delivery_boy.png")}
+            style={styles.img}
+          />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.infoContainer}>
         <CustomerText variants="h4" fontFamily={Fonts.SemiBold}>
           Hello {name}!
@@ -33,7 +40,7 @@ const DeliveryHeader: FC<DeliveryHeaderProps> = ({ name, email }) => {
 
       <TouchableOpacity
         onPress={() => {
-          router.navigate("/features/auth/CustomerLogin");
+          router.replace("/features/auth/CustomerLogin");
           logout();
           asyncStorage.clearAll();
         }}

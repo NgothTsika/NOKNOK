@@ -23,8 +23,9 @@ const DeliveryMap: FC = () => {
   const user = useAuthStore((state) => state.user);
   const [orderData, setOrderData] = useState<any>(null);
   const [myLocation, setMyLocation] = useState<any>(null);
-  const { data } = useLocalSearchParams(); // ✅ Fetch param
-  const orderDetails = JSON.parse(data as string); // ✅ Parse it to get order details
+  const { data } = useLocalSearchParams();
+  const orderDetails = JSON.parse(data as string);
+
   const { setCurrentOrder } = useAuthStore();
   const fetchOrderDetails = async () => {
     const data = await getOrderById(String(orderDetails?._id)); // 🟢 Now this will work the same
@@ -115,8 +116,8 @@ const DeliveryMap: FC = () => {
       "delivered"
     );
     if (data) {
-      setCurrentOrder(data);
-      Alert.alert("Order Accepted, Grab your Package");
+      setCurrentOrder(null);
+      Alert.alert("Woohoo! You made it 🥳");
     } else {
       Alert.alert("There was an error");
     }
