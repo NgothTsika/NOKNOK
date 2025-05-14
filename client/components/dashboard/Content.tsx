@@ -5,15 +5,22 @@ import { adData, categories } from "@/utils/dummyData";
 import CustomerText from "../ui/CustomText";
 import { Fonts } from "@/utils/Constants";
 import CategoryContainer from "./CategoryContainer";
+import ProductSliderScroll from "./ProductSliderScroll";
 
 const Content = () => {
   return (
     <View className="px-5">
       <AdCorousal adData={adData} />
       <CustomerText variants="h5" fontFamily={Fonts.SemiBold}>
-        Grocery & Kitchen
+        Category
       </CustomerText>
-      <CategoryContainer data={categories} />
+      <ProductSliderScroll
+        categories={categories.map((cat) => ({
+          _id: cat.id.toString(),
+          name: cat.name,
+          image: cat.image,
+        }))}
+      />
       <CustomerText variants="h5" fontFamily={Fonts.SemiBold}>
         Bestsellers
       </CustomerText>

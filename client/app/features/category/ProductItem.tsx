@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import React, { FC } from "react";
 import { screenheight } from "@/utils/Scalling";
 import CustomerText from "@/components/ui/CustomText";

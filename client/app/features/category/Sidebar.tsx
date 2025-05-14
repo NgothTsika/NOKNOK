@@ -1,22 +1,28 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { FC, useEffect, useRef } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+
+import { Colors } from "@/utils/Constants";
 import CustomerText from "@/components/ui/CustomText";
 import { RFValue } from "react-native-responsive-fontsize";
-import { Colors } from "@/utils/Constants";
 
 interface SidebarProps {
   selectedCategory: any;
   categories: any;
   onCategoryPress: (category: any) => void;
 }
-
 const Sidebar: FC<SidebarProps> = ({
   selectedCategory,
   categories,
@@ -28,7 +34,6 @@ const Sidebar: FC<SidebarProps> = ({
 
   useEffect(() => {
     let targetIndex = -1;
-
     categories?.forEach((category: any, index: number) => {
       const isSelected = selectedCategory?._id === category._id;
       animatedValues[index].value = withTiming(isSelected ? 2 : -15, {
@@ -48,11 +53,9 @@ const Sidebar: FC<SidebarProps> = ({
       });
     }
   }, [selectedCategory]);
-
   const indicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: indicatorPosition.value }],
   }));
-
   return (
     <View style={styles.Sidebar}>
       <ScrollView
@@ -66,7 +69,6 @@ const Sidebar: FC<SidebarProps> = ({
             const animatedStyle = useAnimatedStyle(() => ({
               bottom: animatedValues[index].value,
             }));
-
             return (
               <TouchableOpacity
                 key={index}
@@ -101,7 +103,6 @@ const Sidebar: FC<SidebarProps> = ({
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   Sidebar: {
     width: "24%",
@@ -148,5 +149,4 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
   },
 });
-
 export default Sidebar;

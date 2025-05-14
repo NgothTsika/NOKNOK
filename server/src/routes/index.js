@@ -10,5 +10,4 @@ export const registerRoutes = async (fastify) => {
   fastify.register(productRoutes, { prefix: prefix });
   fastify.register(categoryRoutes, { prefix: prefix });
   fastify.register(orderRoutes, { prefix: prefix });
-  fastify.register(branchRoutes, { prefix }); // 👈 register here
 };

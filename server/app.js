@@ -31,7 +31,7 @@ const start = async () => {
       process.exit(1);
     } else {
       console.log(
-        `TokTok-Shop Started on http://192.168.0.197:${PORT}${admin.options.rootPath} ` // http://localhost:${PORT}${admin.options.rootPath}
+        `TokTok-Shop Started on http://192.168.100.198:${PORT}${admin.options.rootPath} ` // http://localhost:${PORT}${admin.options.rootPath}
       );
     }
   });
