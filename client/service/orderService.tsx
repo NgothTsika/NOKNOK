@@ -84,3 +84,31 @@ export const confirmOrder = async (id: string, location: any) => {
     return null;
   }
 };
+
+export const initiatePayment = async (
+  orderId: string,
+  amount: number,
+  phoneNumber: string
+) => {
+  try {
+    const response = await appAxios.post(`/payment/initiate`, {
+      orderId,
+      amount,
+      phoneNumber,
+    });
+    return response.data; // Return payment initiation response
+  } catch (error) {
+    console.error("Initiate Payment Error", error);
+    return null;
+  }
+};
+
+export const checkPaymentStatus = async (paymentId: string) => {
+  try {
+    const response = await appAxios.get(`/payment/status/${paymentId}`);
+    return response.data; // Return payment status
+  } catch (error) {
+    console.error("Check Payment Status Error", error);
+    return null;
+  }
+};
